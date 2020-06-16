@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WLED</title>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <ul>
+        <a href="delete.html"><img src="icon_bin.png" style="float: left;" height=75></a>
+        <img src="wled_logo.png" id="logo" class="logo" height=75>
+        <a href="add.html"><img src="icon_add.png" style="float: right;" height=75></a>
+    </ul>
+    <br><br><br>
+    <div id="lights">
+
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        if (localStorage.getItem("lights") !== null) {
+            showLights();
+            sync();
+        }
+    </script>
+
+</body>
+
+</html>

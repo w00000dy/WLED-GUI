@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WLED</title>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <ul>
+        <a href="index.html"><img src="icon_back.png" style="float: left;" height=75></a>
+        <img src="wled_logo.png" id="logo" class="logo" height=75>
+        <img src="icon_check.png" style="float: right;" height=75 onclick="addIP()">
+    </ul>
+    <br><br><br><br><br><br><br>
+    <hr>
+    <br>
+    Add a light manually:<br><br>
+
+    <div class="input-field" style="width: 80%; margin: auto;">
+        <input placeholder="192.168.4.1" id="ip" type="text">
+        <label for="ip">IP address</label>
+    </div>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
