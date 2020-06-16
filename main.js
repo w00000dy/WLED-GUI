@@ -8,7 +8,7 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true
     },
-    icon: "LogoACh.ico"
+    icon: "icon.png"
   })
 
   // and load the index.html of the app.
