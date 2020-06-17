@@ -15,10 +15,10 @@ function createWindow () {
   win.loadFile('index.html')
 
   // remove menubar
-  // win.removeMenu()
+  win.removeMenu()
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
