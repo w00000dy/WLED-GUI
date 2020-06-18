@@ -1,6 +1,7 @@
 # WLED-GUI changelog
 
 ## WLED-GUI version 0.2.0
+- added package for darwin
 - moved images into image folder
 - added some comments
 - expanded window width
