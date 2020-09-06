@@ -1,5 +1,9 @@
 # WLED-GUI changelog
 
+## WLED-GUI version 0.3.0
+- updated for WLED version 0.10.2
+- added settings functionality
+
 ## WLED-GUI version 0.2.0
 - added package for darwin
 - moved images into image folder
