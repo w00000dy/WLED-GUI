@@ -2,6 +2,13 @@ document.getElementById("logo").addEventListener("click", openRepositorie);
 // the imgClicked variable prevents the goToWled() function from beeing triggerd when clicking in a button
 var imgClicked = false;
 
+// Light mode
+var ui = JSON.parse(localStorage.getItem("wledUiCfg"));
+if (ui.theme.base == "light") {
+    document.body.style.backgroundColor = "#eee";
+    document.body.style.color = "black";
+}
+
 // Default PC Mode on
 if (localStorage.getItem("pcm") === null) {
     localStorage.setItem("pcm", true);
@@ -21,7 +28,13 @@ function showLights() {
     for (let index = 0; index < lights.length; index++) {
         const element = lights[index];
         txt += "<div class=\"light\" onclick=\"goToWled(" + index + ")\" style=\"cursor: pointer;\">\n<br>\n";
-        txt += "<img src=\"images/icon_power.png\" id=\"img" + index + "\" class=\"icon ";
+        // Light mode
+        if (ui.theme.base == "light") {
+            txt += "<img src=\"images/icon_power.png\" id=\"img" + index + "\" class=\"darkicon ";
+        }
+        else {
+            txt += "<img src=\"images/icon_power.png\" id=\"img" + index + "\" class=\"icon ";
+        }
         if (element.on === true) {
             txt += "on";
         }

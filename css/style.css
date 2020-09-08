@@ -33,6 +33,19 @@ img {
 .icon.on {
     background-color: #666666;
 }
+.darkicon {
+    float: right;
+    background-color: #818181;
+    border: 5px solid #030303;
+    border-radius: 50px;
+}
+.darkicon:hover {
+    background-color: white;
+    border-color: #818181;
+}
+.darkicon.on {
+    background-color: #222222;
+}
 
 .logo {
     position: fixed;
