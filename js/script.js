@@ -3,10 +3,18 @@ document.getElementById("logo").addEventListener("click", openRepositorie);
 var imgClicked = false;
 
 // Light mode
-var ui = JSON.parse(localStorage.getItem("wledUiCfg"));
-if (ui.theme.base == "light") {
-    document.body.style.backgroundColor = "#eee";
-    document.body.style.color = "black";
+if (localStorage.getItem("wledUiCfg") === null) {
+    var ui = {
+        "theme": {
+            "base": "dark"
+        }
+    };
+} else {
+    var ui = JSON.parse(localStorage.getItem("wledUiCfg"));
+    if (ui.theme.base == "light") {
+        document.body.style.backgroundColor = "#eee";
+        document.body.style.color = "black";
+    }
 }
 
 // Default PC Mode on
