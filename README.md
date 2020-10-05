@@ -9,9 +9,6 @@ This is a cross-platform desktop app for [WLED](https://github.com/Aircoookie/WL
 - Multiple WLEDs support ✅
 - No access to system settings (perfectly for production use) ✅
 
-### Future releases:
-- Brightness slider 🔜
-
 ## 🖼️ Images
 <img src="/images/macbook-pro-space-gray-on-the-wooden-table.jpg" width="50%"><img src="/images/bright-office-enviroment-with-macbook-air.jpg" width="50%">
  
