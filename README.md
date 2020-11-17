@@ -12,6 +12,9 @@ This is a cross-platform desktop app for [WLED](https://github.com/Aircoookie/WL
 ## 🖼️ Images
 <img src="/images/macbook-pro-space-gray-on-the-wooden-table.jpg" width="50%"><img src="/images/bright-office-enviroment-with-macbook-air.jpg" width="50%">
  
+## ⬇️ Download
+You can download the latest version [here](https://github.com/WoodyLetsCode/WLED-GUI/releases/latest).
+
 ## ✌️ Credits
 - [Electron](https://www.electronjs.org/)
 - [NodeJS](https://nodejs.org/)
