@@ -1,5 +1,7 @@
 {
   "name": "wled-gui",
+  "description": "A cross-platform desktop app for WLED",
+  "author": "WoodyLetsCode",
   "version": "0.4.1",
   "homepage": "https://github.com/WoodyLetsCode/WLED-GUI",
   "bugs": {
@@ -11,11 +13,16 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
-  },
-  "dependencies": {
-    "electron": "^11.0.3"
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "build": "electron-builder -mwl",
+    "build windows": "electron-builder --windows",
+    "build linux": "electron-builder --linux",
+    "build mac": "electron-builder --mac"
+    
   },
   "devDependencies": {
+    "electron": "^11.0.3",
+    "electron-builder": "^22.9.1"
   }
 }
