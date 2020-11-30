@@ -17,6 +17,14 @@ if (localStorage.getItem("wledUiCfg") === null) {
     }
 }
 
+// create json
+if (localStorage.getItem("lights") === null) {
+    console.log("No local storage item found. Creating one...");
+    var lights = [];
+    json = JSON.stringify(lights);
+    localStorage.setItem("lights", json);
+}
+
 // Default PC Mode on
 if (localStorage.getItem("pcm") === null) {
     localStorage.setItem("pcm", true);
@@ -137,26 +145,81 @@ function addIP() {
     xhr.onload = function () { // Call a function when the state changes.
         var json = JSON.parse(xhr.response);
         var name = json.name;
-        if (localStorage.getItem("lights") === null) {
-            console.log("No local storage item found. Creating one...");
-            var light = { "name": name, "ip": ip, "online": true };
-            var lights = [light];
-            json = JSON.stringify(lights);
-            localStorage.setItem("lights", json);
-        } else {
-            var light = { "name": name, "ip": ip, "online": true };
-            var lights = JSON.parse(localStorage.getItem("lights"));
-            console.log(lights);
-            lights.push(light);
-            json = JSON.stringify(lights);
-            localStorage.setItem("lights", json);
-        }
+        var light = { "name": name, "ip": ip, "online": true };
+        var lights = JSON.parse(localStorage.getItem("lights"));
+        console.log(lights);
+        lights.push(light);
+        json = JSON.stringify(lights);
+        localStorage.setItem("lights", json);
         location.href = "index.html";
     }
     xhr.onerror = function () {
         M.toast({ html: 'Error! Can\'t connect to WLED.' });
     }
     xhr.send();
+}
+
+// search for wled devices and add them
+function scan() {
+    var os = require('os');
+
+    var interfaces = os.networkInterfaces();
+    var addresses = [];
+    console.log(interfaces);
+    for (var k in interfaces) {
+        for (var k2 in interfaces[k]) {
+            var address = interfaces[k][k2];
+            if (address.family === 'IPv4' && !address.internal) {
+                addresses.push(address.address);
+            }
+        }
+    }
+
+    console.log(addresses);
+
+    for (let index = 0; index < addresses.length; index++) {
+        const element = addresses[index];
+        var subnet = element.slice(0, element.lastIndexOf(".") + 1);
+        for (let index = 0; index < 255; index++) {
+            let ip = subnet + index;
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", 'http://' + ip + '/json/info', true);
+            xhr.timeout = 2000; // time in milliseconds
+            xhr.onload = function () { // Call a function when the state changes.
+                try {
+                    var json = JSON.parse(xhr.response);
+                }
+                catch {
+                    var json = { "brand": null };
+                }
+                if (json.brand === "WLED" && checkIP(ip) === false) {
+                    var name = json.name;
+                    var light = { "name": name, "ip": ip, "online": true };
+                    var lights = JSON.parse(localStorage.getItem("lights"));
+                    lights.push(light);
+                    json = JSON.stringify(lights);
+                    localStorage.setItem("lights", json);
+
+                    M.toast({ html: 'Found ' + name });
+                }
+            }
+            xhr.onerror = null;
+            xhr.send();
+        }
+    }
+}
+
+// check if a device with the ip already exists
+function checkIP(targetIp) {
+    function comparison(device) {
+        return device.ip == targetIp;
+    }
+    let lights = JSON.parse(localStorage.getItem("lights"));
+    if (typeof lights.find(comparison) !== "undefined") {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // deletes a light from localstorage

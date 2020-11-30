@@ -6,7 +6,8 @@ function createWindow() {
     width: 1263,
     height: 900,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     },
     icon: __dirname + "/images/icon.png"
   })

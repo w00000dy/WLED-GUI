@@ -1,5 +1,11 @@
 # WLED-GUI changelog
 
+## WLED-GUI version 0.5.0
+- added auto discover button
+- updated for WLED version 0.11.0
+- updated to electron version 11.0.3
+- added installers for windows, linux & mac
+
 ## WLED-GUI version 0.4.1
 - fixed issue #2
 
