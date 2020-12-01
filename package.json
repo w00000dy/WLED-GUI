@@ -19,7 +19,12 @@
     "pack": "electron-builder --dir",
     "build": "electron-builder -mwl",
     "build windows": "electron-builder --windows",
+    "build windows oneclick": "electron-builder --windows -c.nsis.oneClick=true -c.nsis.allowToChangeInstallationDirectory=false",
+    "build windows msi": "electron-builder --windows -c.win.target=msi",
+    "build windows msi oneclick": "electron-builder --windows -c.win.target=msi -c.msi.oneClick=true",
     "build linux": "electron-builder --linux --publish=never",
+    "build linux deb": "electron-builder --linux --publish=never -c.linux.target=deb",
+    "build linux rpm": "electron-builder --linux --publish=never -c.linux.target=rpm",
     "build mac": "electron-builder --mac --publish=never"
   },
   "build": {
@@ -27,6 +32,9 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "msi": {
+      "oneClick": false
     }
   },
   "devDependencies": {
