@@ -91,11 +91,12 @@ function getStatus() {
         const ip = lights[index].ip;
 
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://' + ip + "/json/state", true);
+        xhr.open('GET', 'http://' + ip + "/json", true);
         xhr.onload = function () {
             var json = JSON.parse(xhr.response);
             lights[index].online = true;
-            lights[index].on = json.on;
+            lights[index].on = json.state.on;
+            lights[index].version = json.info.ver;
             localStorage.setItem("lights", JSON.stringify(lights));
             showLights();
         };
@@ -114,7 +115,9 @@ function goToWled(index) {
     if (imgClicked !== true) {
         var lights = JSON.parse(localStorage.getItem("lights"));
         var ip = lights[index].ip;
+        var version = lights[index].version;
         localStorage.setItem("locIp", ip);
+        localStorage.setItem("locVersion", version);
         location.href = "wled-viewer.html";
     }
 }

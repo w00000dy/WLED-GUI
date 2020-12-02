@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 	<title>WLED Settings</title>
 	<style>
 		body {
@@ -9,9 +11,11 @@
 			height: 100;
 			margin: 0;
 		}
+
 		html {
 			--h: 11.55vh;
 		}
+
 		button {
 			background: #333;
 			color: #fff;
@@ -25,22 +29,34 @@
 		}
 	</style>
 	<script>
-	function BB()
-	{
-		if (window.frameElement) {
-			document.getElementById("b").style.display = "none";
-			document.documentElement.style.setProperty('--h',"13.86vh");
+		function BB() {
+			if (window.frameElement) {
+				document.getElementById("b").style.display = "none";
+				document.documentElement.style.setProperty('--h', "13.86vh");
+			}
 		}
-	}
 	</script>
 </head>
+
 <body onload="BB()">
-<form action="/"><button type=submit id="b">Back</button></form>
-<!--<form action="/settings/wifi"><button type="submit">WiFi Setup</button></form>
-<form action="/settings/leds"><button type="submit">LED Preferences</button></form> -->
-<form action="settings_ui.html"><button type="submit">User Interface</button></form>
-<!-- <form action="/settings/sync"><button type="submit">Sync Interfaces</button></form>
-<form action="/settings/time"><button type="submit">Time & Macros</button></form>
-<form action="/settings/sec"><button type="submit">Security & Updates</button></form> -->
+	<form action="/"><button type=submit id="b">Back</button></form>
+	<!--<form action="/settings/wifi"><button type="submit">WiFi Setup</button></form>
+	<form action="/settings/leds"><button type="submit">LED Preferences</button></form> -->
+	<form action="settings_ui.html"><button type="submit">User Interface</button></form>
+	<!-- <form action="/settings/sync"><button type="submit">Sync Interfaces</button></form>
+	<form action="/settings/time"><button type="submit">Time & Macros</button></form>
+	<form action="/settings/sec"><button type="submit">Security & Updates</button></form> -->
+	<form onclick="openSettings()"><button>More settings...</button></form>
+
+	<script>
+		// Open settings
+		function openSettings() {
+			let ip = localStorage.getItem("locIp");
+			const { shell } = parent.require('electron')
+			shell.openExternal('http:/' + ip + '/settings')
+		}
+	</script>
+
 </body>
+
 </html>

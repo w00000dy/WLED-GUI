@@ -1,5 +1,10 @@
 # WLED-GUI changelog
 
+## WLED-GUI version 0.5.1
+- fixed settings page bug
+- added "More settings..." button to settings
+- added backward compatibility (back to version 0.10.0)
+
 ## WLED-GUI version 0.5.0
 - added auto discover button
 - updated for WLED version 0.11.0
