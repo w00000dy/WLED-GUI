@@ -5,7 +5,7 @@
 - added backward compatibility (back to version 0.10.0)
 - added application category type
 - added akemi icon to installer header
-- change app icon
+- changed app icon
 ### Fixes:
 - fixed settings page bug
 
