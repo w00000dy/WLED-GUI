@@ -2,7 +2,8 @@
   "name": "wled-gui",
   "description": "A cross-platform desktop app for WLED",
   "author": {
-    "name": "WoodyLetsCode"
+    "name": "WoodyLetsCode",
+    "email": "27882680+WoodyLetsCode@users.noreply.github.com"
   },
   "version": "0.5.0",
   "homepage": "https://github.com/WoodyLetsCode/WLED-GUI",
@@ -35,6 +36,9 @@
     },
     "msi": {
       "oneClick": false
+    },
+    "mac": {
+      "category": "public.app-category.lifestyle"
     }
   },
   "devDependencies": {
