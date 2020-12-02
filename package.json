@@ -26,6 +26,8 @@
     "build linux": "electron-builder --linux --publish=never",
     "build linux deb": "electron-builder --linux --publish=never -c.linux.target=deb",
     "build linux rpm": "electron-builder --linux --publish=never -c.linux.target=rpm",
+    "build linux snap": "electron-builder --linux --publish=never -c.linux.target=snap",
+    "build linux freebsd": "electron-builder --linux --publish=never -c.linux.target=freebsd",
     "build mac": "electron-builder --mac --publish=never"
   },
   "build": {
