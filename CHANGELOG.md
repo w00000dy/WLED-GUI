@@ -1,9 +1,12 @@
 # WLED-GUI changelog
 
 ## WLED-GUI version 0.5.1
-- fixed settings page bug
 - added "More settings..." button to settings
 - added backward compatibility (back to version 0.10.0)
+- added application category type
+- added akemi icon to installer header
+### Fixes:
+- fixed settings page bug
 
 ## WLED-GUI version 0.5.0
 - added auto discover button
@@ -28,7 +31,6 @@
 - added some comments
 - expanded window width
 - PC Mode is turned on by default
-
 ### Fixes:
 - fixed bug with blinking button
 
