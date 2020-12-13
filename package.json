@@ -28,10 +28,12 @@
     "build linux rpm": "electron-builder --linux --publish=never -c.linux.target=rpm",
     "build linux snap": "electron-builder --linux --publish=never -c.linux.target=snap",
     "build linux freebsd": "electron-builder --linux --publish=never -c.linux.target=freebsd",
+    "build linux apk": "electron-builder --linux --publish=never -c.linux.target=apk",
     "build mac": "electron-builder --mac --publish=never"
   },
   "build": {
     "productName": "WLED",
+    "appId": "com.wled.gui",
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
