@@ -17,4 +17,5 @@ You can download the latest version [here](https://github.com/WoodyLetsCode/WLED
 
 ## ✌️ Credits
 - [Electron](https://www.electronjs.org/)
+- [electron-builder](https://github.com/electron-userland/electron-builder)
 - [NodeJS](https://nodejs.org/)
