@@ -1,6 +1,9 @@
 # WLED-GUI changelog
 
 ## WLED-GUI version 0.5.1
+- added an update notifier
+
+## WLED-GUI version 0.5.1
 - added "More settings..." button to settings
 - added backward compatibility (back to version 0.10.0)
 - added application category type

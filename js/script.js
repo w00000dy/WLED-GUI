@@ -1,6 +1,8 @@
 document.getElementById("logo").addEventListener("click", openRepositorie);
 // the imgClicked variable prevents the goToWled() function from beeing triggerd when clicking in a button
 var imgClicked = false;
+// set version
+const version = "0.5.2";
 
 // Light mode
 if (localStorage.getItem("wledUiCfg") === null) {
@@ -231,6 +233,26 @@ function del(index) {
     lights.splice(index, 1);
     localStorage.setItem("lights", JSON.stringify(lights));
     showLightsDel();
+}
+
+// checks if a update is available
+function checkForUpdate() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://raw.githubusercontent.com/WoodyLetsCode/WLED-GUI/master/VERSION', true);
+    xhr.onload = function () {
+        console.log();
+        if (xhr.response !== version) {
+            console.log("New update avaiable!");
+            console.log(xhr.response);
+            console.log(version);
+            console.log(xhr.response != version);
+            let instance = M.Modal.getInstance(document.getElementById("updatePopup"));
+            document.getElementById("updatePopupText").innerText = "A new update for WLED-GUI is available.\n\nYour version: " + version + "\nLatest version: " + xhr.response;
+            instance.open();
+        }
+    };
+
+    xhr.send();
 }
 
 function sync() {

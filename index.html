@@ -16,16 +16,31 @@
         <a href="add.html"><img src="images/icon_add.png" style="float: right;" height=75></a>
     </ul>
     <br><br><br>
+    <!-- Modal Structure -->
+    <div id="updatePopup" class="modal" style="color: black;">
+        <div class="modal-content">
+            <h4>New update available!</h4>
+            <p id="updatePopupText">A new update for WLED-GUI is available.</p>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat">Remind me later</a>
+            <a class="modal-close waves-effect waves-green btn-flat">Download update</a>
+        </div>
+    </div>
+
     <div id="lights">
 
     </div>
 
+    <script src="js/materialize.min.js"></script>
     <script src="js/script.js"></script>
     <script>
+        M.AutoInit();
         if (localStorage.getItem("lights") !== null) {
             showLights();
             sync();
         }
+        checkForUpdate();
     </script>
 
 </body>
