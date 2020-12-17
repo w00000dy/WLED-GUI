@@ -29,6 +29,14 @@
 
     <script src="js/materialize.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+        var bonjour = require('bonjour')()
+
+        // browse for all http services
+        bonjour.find({ type: "http" }, function (service) {
+            console.log('Found an HTTP server:', service)
+        })
+    </script>
 
 </body>
 

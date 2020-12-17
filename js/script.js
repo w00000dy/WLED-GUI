@@ -2,7 +2,7 @@ document.getElementById("logo").addEventListener("click", openRepositorie);
 // the imgClicked variable prevents the goToWled() function from beeing triggerd when clicking in a button
 var imgClicked = false;
 // set version
-const version = "0.5.2";
+const version = "0.5.1";
 
 // Light mode
 if (localStorage.getItem("wledUiCfg") === null) {
@@ -32,10 +32,16 @@ if (localStorage.getItem("pcm") === null) {
     localStorage.setItem("pcm", true);
 }
 
-// Opens Github page in defalt browser
+// Opens Github page in default browser
 function openRepositorie() {
     const { shell } = require('electron')
     shell.openExternal('https://github.com/Aircoookie/WLED')
+}
+
+// Opens the latest release of WLED-GUI in default browser
+function openRelease() {
+    const { shell } = require('electron')
+    shell.openExternal('https://github.com/WoodyLetsCode/WLED-GUI/releases/latest')
 }
 
 // Shows all Lighs in main page
@@ -241,11 +247,8 @@ function checkForUpdate() {
     xhr.open('GET', 'https://raw.githubusercontent.com/WoodyLetsCode/WLED-GUI/master/VERSION', true);
     xhr.onload = function () {
         console.log();
-        if (xhr.response !== version) {
+        if (xhr.response !== version && (localStorage.getItem("remindLaterTime") === null || (Date.now() - localStorage.getItem("remindLaterTime")) >= 259200000)) { // 3 days
             console.log("New update avaiable!");
-            console.log(xhr.response);
-            console.log(version);
-            console.log(xhr.response != version);
             let instance = M.Modal.getInstance(document.getElementById("updatePopup"));
             document.getElementById("updatePopupText").innerText = "A new update for WLED-GUI is available.\n\nYour version: " + version + "\nLatest version: " + xhr.response;
             instance.open();
@@ -253,6 +256,11 @@ function checkForUpdate() {
     };
 
     xhr.send();
+}
+
+// set remind later time
+function remindLater() {
+    localStorage.setItem('remindLaterTime', Date.now());
 }
 
 function sync() {

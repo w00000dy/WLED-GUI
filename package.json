@@ -51,5 +51,8 @@
   "devDependencies": {
     "electron": "^11.0.3",
     "electron-builder": "^22.9.1"
+  },
+  "dependencies": {
+    "bonjour": "^3.5.0"
   }
 }
