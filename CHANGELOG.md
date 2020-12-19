@@ -8,7 +8,7 @@
 - updated for WLED version 0.11.1
 - optimized backwards compatibility
 - updated ui settings page
-- general code optimazations
+- general code optimizations
 - updated to electron version 11.1.0
 - bigger app icon
 
