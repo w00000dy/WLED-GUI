@@ -144,55 +144,12 @@ function toggleLight(index) {
     xhr.send();
 }
 
-// adds a light and save it to localstorge
-// gets data from json api
-function addIP() {
-    var ip = document.getElementById("ip").value;
-    console.log(ip);
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", 'http://' + ip + '/json/info', true);
-    xhr.timeout = 2000; // time in milliseconds
-    xhr.onload = function () { // Call a function when the state changes.
-        var json = JSON.parse(xhr.response);
-        var name = json.name;
-        var light = { "name": name, "ip": ip, "online": true };
-        var lights = JSON.parse(localStorage.getItem("lights"));
-        console.log(lights);
-        lights.push(light);
-        json = JSON.stringify(lights);
-        localStorage.setItem("lights", json);
-        location.href = "index.html";
-    }
-    xhr.onerror = function () {
-        M.toast({ html: 'Error! Can\'t connect to WLED.' });
-    }
-    xhr.send();
-}
-
 // deletes a light from localstorage
 function del(index) {
     var lights = JSON.parse(localStorage.getItem("lights"));
     lights.splice(index, 1);
     localStorage.setItem("lights", JSON.stringify(lights));
     showLightsDel();
-}
-
-// checks if a update is available
-function checkForUpdate() {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://raw.githubusercontent.com/WoodyLetsCode/WLED-GUI/master/VERSION', true);
-    xhr.onload = function () {
-        console.log();
-        if (xhr.response !== version && (localStorage.getItem("remindLaterTime") === null || (Date.now() - localStorage.getItem("remindLaterTime")) >= 259200000)) { // 3 days
-            console.log("New update avaiable!");
-            let instance = M.Modal.getInstance(document.getElementById("updatePopup"));
-            document.getElementById("updatePopupText").innerText = "A new update for WLED-GUI is available.\n\nYour version: " + version + "\nLatest version: " + xhr.response;
-            instance.open();
-        }
-    };
-
-    xhr.send();
 }
 
 // set remind later time

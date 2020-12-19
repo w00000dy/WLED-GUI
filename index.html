@@ -34,13 +34,13 @@
 
     <script src="js/materialize.min.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/updater.js"></script>
     <script>
         M.AutoInit();
         if (localStorage.getItem("lights") !== null) {
             showLights();
             sync();
         }
-        checkForUpdate();
     </script>
 
 </body>

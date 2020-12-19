@@ -1,7 +1,10 @@
 # WLED-GUI changelog
 
-## WLED-GUI version 0.5.1
+## WLED-GUI version 0.6.0
 - added an update notifier
+- added new device deiscovery method
+- Now you get a warning when trying to add same device multiple times
+- optimized adding device functionality
 
 ## WLED-GUI version 0.5.1
 - added "More settings..." button to settings
