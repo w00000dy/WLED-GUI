@@ -45,8 +45,8 @@
       "category": "public.app-category.lifestyle"
     },
     "linux": {
-      "category": "Network",
-      "icon": "build/256x256.png"
+      "icon": "build/256x256.png",
+      "category": "Network"
     }
   },
   "devDependencies": {
