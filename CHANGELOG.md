@@ -9,6 +9,7 @@
 - optimized backwards compatibility
 - updated ui settings page
 - general code optimazations
+- updated to electron version 11.1.0
 
 ## WLED-GUI version 0.5.1
 - added "More settings..." button to settings
