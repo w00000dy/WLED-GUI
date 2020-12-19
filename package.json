@@ -41,6 +41,7 @@
       "oneClick": false
     },
     "mac": {
+      "icon": "build/icon.icns",
       "category": "public.app-category.lifestyle"
     },
     "linux": {
