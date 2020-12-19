@@ -1,8 +1,6 @@
 document.getElementById("logo").addEventListener("click", openRepositorie);
 // the imgClicked variable prevents the goToWled() function from beeing triggerd when clicking in a button
 var imgClicked = false;
-// set version
-const version = "0.5.1";
 
 // Light mode
 if (localStorage.getItem("wledUiCfg") === null) {
