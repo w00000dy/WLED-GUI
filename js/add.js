@@ -167,8 +167,12 @@ function addLightManually() {
 
 // saves a light to local storage
 function addLight(name, ip) {
-    var light = { "name": name, "ip": ip, "online": true };
-    var lights = JSON.parse(localStorage.getItem("lights"));
+    let light = {
+        name: name,
+        ip: ip,
+        online: true
+    };
+    let lights = JSON.parse(localStorage.getItem("lights"));
     console.log(lights);
     lights.push(light);
     json = JSON.stringify(lights);
