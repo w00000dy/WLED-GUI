@@ -7,6 +7,7 @@
 - optimized adding device functionality
 - updated for WLED version 0.11.1
 - optimized backwards compatibility
+- updated ui settings page
 
 ## WLED-GUI version 0.5.1
 - added "More settings..." button to settings
