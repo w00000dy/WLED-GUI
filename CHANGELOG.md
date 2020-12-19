@@ -5,6 +5,7 @@
 - added new device deiscovery method
 - Now you get a warning when trying to add same device multiple times
 - optimized adding device functionality
+- updated for WLED version 0.11.1
 
 ## WLED-GUI version 0.5.1
 - added "More settings..." button to settings
