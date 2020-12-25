@@ -2,60 +2,40 @@
 <html lang="en">
 
 <head>
-	<title>WLED Settings</title>
-	<meta charset="UTF-8">
-	<style>
-		body {
-			text-align: center;
-			background: #222;
-			height: 100px;
-			margin: 0;
-		}
-
-		html {
-			--h: 11.55vh;
-		}
-
-		button {
-			background: #333;
-			color: #fff;
-			font-family: Verdana, Helvetica, sans-serif;
-			border: 0.3ch solid #333;
-			display: inline-block;
-			font-size: 8vmin;
-			height: var(--h);
-			width: 95%;
-			margin-top: 2.4vh;
-		}
-	</style>
-	<script>
-		function BB() {
-			if (window.frameElement) {
-				document.getElementById("b").style.display = "none";
-				document.documentElement.style.setProperty('--h', "13.86vh");
-			}
-		}
-	</script>
+    <title>WLED</title>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
 </head>
 
-<body onload="BB()">
-	<form action="/"><button type=submit id="b">Back</button></form>
-	<!--<form action="/settings/wifi"><button type="submit">WiFi Setup</button></form>
-	<form action="/settings/leds"><button type="submit">LED Preferences</button></form> -->
-	<form action="settings_ui.html"><button type="submit">User Interface</button></form>
-	<!-- <form action="/settings/sync"><button type="submit">Sync Interfaces</button></form>
-	<form action="/settings/time"><button type="submit">Time & Macros</button></form>
-	<form action="/settings/sec"><button type="submit">Security & Updates</button></form> -->
-	<form onclick="openSettings()"><button>More settings...</button></form>
+<body>
 
-	<script>
-		// Open settings
-		function openSettings() {
-			let ip = localStorage.getItem("locIp");
-			const { shell } = parent.require('electron')
-			shell.openExternal('http:/' + ip + '/settings')
-		}
-	</script>
+    <ul>
+        <li><a href="index.html"><img src="images/icon_back.png" alt="back" style="float: left;" height=75></a></li>
+        <li><img src="images/wled_logo.png" alt="logo" id="logo" class="logo" height=75></li>
+    </ul>
+
+    <br><br><br><br><br>
+
+    <table>
+        <tr>
+            <td>Autostart</td>
+            <td>
+                <!-- Switch -->
+                <div class="switch">
+                    <label>
+                        Off
+                        <input type="checkbox" id="autostart">
+                        <span class="lever"></span>
+                        On
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/settings.js"></script>
 
 </body>
 
