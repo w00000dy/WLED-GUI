@@ -21,6 +21,21 @@ img {
     cursor: pointer;
 }
 
+table {
+    width: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+td, th {
+    text-align: center;
+}
+
+tr {
+    border: none;
+}
+
 .icon {
     float: right;
     border: 5px solid white;

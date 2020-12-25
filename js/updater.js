@@ -1,5 +1,5 @@
 // set version
-const wledGuiVersion = "0.6.0";
+const wledGuiVersion = "0.6.1";
 
 checkForUpdate();
 

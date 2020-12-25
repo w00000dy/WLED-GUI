@@ -2,10 +2,10 @@
   "name": "wled-gui",
   "description": "A cross-platform desktop app for WLED",
   "author": {
-    "name": "WoodyLetsCode",
+    "name": "Woody",
     "email": "27882680+WoodyLetsCode@users.noreply.github.com"
   },
-  "version": "0.6.0",
+  "version": "0.6.1",
   "homepage": "https://github.com/WoodyLetsCode/WLED-GUI",
   "bugs": {
     "url": "https://github.com/WoodyLetsCode/WLED-GUI/issues"
@@ -54,6 +54,7 @@
     "electron-builder": "^22.9.1"
   },
   "dependencies": {
+    "auto-launch": "^5.0.5",
     "bonjour": "^3.5.0"
   }
 }
