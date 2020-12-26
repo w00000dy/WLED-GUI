@@ -16,6 +16,7 @@ This is a cross-platform desktop app for [WLED](https://github.com/Aircoookie/WL
 You can download the latest version [here](https://github.com/WoodyLetsCode/WLED-GUI/releases/latest).
 
 ## ✌️ Credits
+- [auto-launch](https://www.npmjs.com/package/auto-launch)
 - [bonjour](https://www.npmjs.com/package/bonjour)
 - [Electron](https://www.electronjs.org/)
 - [electron-builder](https://github.com/electron-userland/electron-builder)
