@@ -1,6 +1,7 @@
 document.getElementById("autostart").addEventListener("change", toggleAutostart);
 
 checkAutostart();
+loadLights();
 
 function toggleAutostart() {
     const AutoLaunch = require('auto-launch');
@@ -32,4 +33,11 @@ function checkAutostart() {
         document.getElementById("autostart").checked = value;
     }
     );
+}
+
+function loadLights() {
+    let lights = JSON.parse(localStorage.getItem("lights"));
+    lights.forEach(element => {
+        document.getElementById("autoTurnOn").innerHTML += "<li class=\"collection-item\"><div>" + element.name + "<a class=\"secondary-content\"><div class=\"switch\"><label>Off<input type=\"checkbox\"><span class=\"lever\"></span>On</label></div></a></div></li>";
+    });
 }
