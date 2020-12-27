@@ -3,6 +3,7 @@ document.getElementById("autostart").addEventListener("change", toggleAutostart)
 checkAutostart();
 loadLights();
 
+// enabels or disables the autostart of wled-gui
 function toggleAutostart() {
     const AutoLaunch = require('auto-launch');
 
@@ -20,6 +21,7 @@ function toggleAutostart() {
     }
 }
 
+// check if autostart is already enabeld
 function checkAutostart() {
     const AutoLaunch = require('auto-launch');
 
@@ -35,9 +37,15 @@ function checkAutostart() {
     );
 }
 
+// loads the lights into the list
 function loadLights() {
     let lights = JSON.parse(localStorage.getItem("lights"));
     lights.forEach(element => {
         document.getElementById("autoTurnOn").innerHTML += "<li class=\"collection-item\"><div>" + element.name + "<a class=\"secondary-content\"><div class=\"switch\"><label>Off<input type=\"checkbox\"><span class=\"lever\"></span>On</label></div></a></div></li>";
     });
+}
+
+// adds a light to autostart so it will automaticcaly turn on with program start
+function addLightToAutostart(params) {
+    
 }
