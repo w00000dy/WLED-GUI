@@ -40,12 +40,24 @@ function checkAutostart() {
 // loads the lights into the list
 function loadLights() {
     let lights = JSON.parse(localStorage.getItem("lights"));
-    lights.forEach(element => {
-        document.getElementById("autoTurnOn").innerHTML += "<li class=\"collection-item\"><div>" + element.name + "<a class=\"secondary-content\"><div class=\"switch\"><label>Off<input type=\"checkbox\"><span class=\"lever\"></span>On</label></div></a></div></li>";
-    });
+    for (let index = 0; index < lights.length; index++) {
+        const element = lights[index];
+        document.getElementById("autoTurnOn").innerHTML += "<li class=\"collection-item\"><div>" + element.name + "<a class=\"secondary-content\"><div class=\"switch\"><label>Off<input type=\"checkbox\" id=\"lightAutostart" + index + "\" onchange=\"addLightToAutostart(" + index + ", this.checked)\"><span class=\"lever\"></span>On</label></div></a></div></li>";
+    }
+    checkLightAutostart(lights);
+}
+
+// check if autostart is already enabeld for a light
+function checkLightAutostart(lights) {
+    for (let index = 0; index < lights.length; index++) {
+        let autostart = lights[index].autostart;
+        document.getElementById("lightAutostart" + index).checked = autostart;
+    }
 }
 
 // adds a light to autostart so it will automaticcaly turn on with program start
-function addLightToAutostart(params) {
-    
+function addLightToAutostart(id, state) {
+    let lights = JSON.parse(localStorage.getItem("lights"));
+    lights[id].autostart = state;
+    localStorage.setItem("lights", JSON.stringify(lights));
 }

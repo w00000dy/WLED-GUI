@@ -1,5 +1,10 @@
 # WLED-GUI changelog
 
+## WLED-GUI version 0.6.1
+- added settings page
+- added autostart option
+- added option to turn on lights automatically at startup
+
 ## WLED-GUI version 0.6.0
 - added an update notifier
 - added new device discovery method

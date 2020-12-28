@@ -5,8 +5,8 @@ var imgClicked = false;
 // Light mode
 if (localStorage.getItem("wledUiCfg") === null) {
     var ui = {
-        "theme": {
-            "base": "dark"
+        theme: {
+            base: "dark"
         }
     };
 } else {

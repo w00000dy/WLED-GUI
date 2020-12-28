@@ -170,7 +170,10 @@ function addLight(name, ip) {
     let light = {
         name: name,
         ip: ip,
-        online: true
+        online: true,
+        on: false,
+        version: "unknown",
+        autostart: false
     };
     let lights = JSON.parse(localStorage.getItem("lights"));
     console.log(lights);

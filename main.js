@@ -20,6 +20,13 @@ function createWindow() {
 
   // Open the DevTools.
   // win.webContents.openDevTools()
+
+  // create hidden worker window
+  workerWindow = new BrowserWindow({
+    show: false
+  });
+  // and load the autostart.html
+  workerWindow.loadFile('autostart.html');
 }
 
 // This method will be called when Electron has finished
