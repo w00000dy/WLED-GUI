@@ -1,16 +1,28 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu, Tray } = require('electron')
+
+const autostarted = process.argv.indexOf('--hidden') !== -1;
 
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1263,
     height: 900,
+    icon: "build/icon.png",
+    minimized: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
-    },
-    icon: __dirname + "/images/icon.png"
+    }
   })
+
+  // check if app was autostarted
+  if (autostarted) {
+    console.log('App is started by AutoLaunch');
+    win.minimize();
+  }
+  else {
+    console.log('App is started by User');
+  }
 
   // and load the index.html of the app.
   win.loadFile('index.html')
@@ -22,7 +34,7 @@ function createWindow() {
   // win.webContents.openDevTools()
 
   // create hidden worker window
-  workerWindow = new BrowserWindow({
+  const workerWindow = new BrowserWindow({
     show: false
   });
   // and load the autostart.html
@@ -33,6 +45,19 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
+
+let tray = null
+app.whenReady().then(() => {
+  tray = new Tray('build/icon.png')
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' }
+  ])
+  tray.setToolTip('This is my application.')
+  tray.setContextMenu(contextMenu)
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

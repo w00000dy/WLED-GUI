@@ -17,6 +17,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "autostart": "electron . --hidden",
     "pack": "electron-builder --dir",
     "build": "electron-builder -mwl",
     "build windows": "electron-builder --windows",
@@ -47,7 +48,10 @@
     "linux": {
       "icon": "build/256x256.png",
       "category": "Network"
-    }
+    },
+    "extraFiles": [
+      "build/icon.png"
+    ]
   },
   "devDependencies": {
     "electron": "^11.1.0",

@@ -11,6 +11,10 @@ function toggleAutostart() {
         name: 'WLED'
     });
 
+    wledAutoLauncher.opts.appPath += '" --hidden"'
+
+    console.log(wledAutoLauncher)
+
     if (document.getElementById("autostart").checked) {
         console.log("Enable autostart");
         wledAutoLauncher.enable();
