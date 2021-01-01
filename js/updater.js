@@ -1,5 +1,5 @@
 // set version
-const wledGuiVersion = "0.6.1";
+const wledGuiVersion = require('electron').remote.app.getVersion();
 
 checkForUpdate();
 
