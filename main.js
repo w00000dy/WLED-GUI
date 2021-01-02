@@ -57,7 +57,7 @@ function createTray(params) {
   console.log("__dirname: " + __dirname);
   console.log("currentPath: " + currentPath);
   console.log("Tray icon path: " + iconPath);
-  tray = new Tray(iconPath)
+  tray = new Tray("build/icon.png")
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Open', click: function () {
