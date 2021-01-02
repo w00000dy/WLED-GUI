@@ -2,28 +2,22 @@ const { app, BrowserWindow, Menu, Tray } = require('electron')
 
 const autostarted = process.argv.indexOf('--hidden') !== -1;
 
+var win;
+var tray;
+
 function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1263,
     height: 900,
     icon: "build/icon.png",
-    minimized: true,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       contextIsolation: false
     }
   })
-
-  // check if app was autostarted
-  if (autostarted) {
-    console.log('App is started by AutoLaunch');
-    win.minimize();
-  }
-  else {
-    console.log('App is started by User');
-  }
 
   // and load the index.html of the app.
   win.loadFile('index.html')
@@ -34,6 +28,19 @@ function createWindow() {
   // Open the DevTools.
   // win.webContents.openDevTools()
 
+  // check if app was autostarted
+  if (autostarted) {
+    console.log('App is started by AutoLaunch');
+  }
+  else {
+    console.log('App is started by User');
+    win.once('ready-to-show', () => {
+      win.show()
+    })
+  }
+}
+
+function createWorker() {
   // create hidden worker window
   const workerWindow = new BrowserWindow({
     show: false
@@ -42,21 +49,31 @@ function createWindow() {
   workerWindow.loadFile('autostart.html');
 }
 
+// tray
+function createTray(params) {
+  tray = new Tray('build/icon.png')
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Open', click: function () {
+        win.show();
+      }
+    },
+    {
+      label: 'Close', click: function () {
+        app.quit();
+      }
+    },
+  ])
+  tray.setToolTip('WLED')
+  tray.setContextMenu(contextMenu)
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
-
-let tray = null
-app.whenReady().then(() => {
-  tray = new Tray('build/icon.png')
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Open' },
-    { label: 'Close' }
-  ])
-  tray.setToolTip('This is my application.')
-  tray.setContextMenu(contextMenu)
-})
+app.whenReady().then(createWorker)
+app.whenReady().then(createTray)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

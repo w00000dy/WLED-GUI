@@ -4,6 +4,7 @@
 - added settings page
 - added autostart option
 - added option to turn on lights automatically at startup
+- the windows will now show when the renderer process has rendered the page (no visual flash anymore)
 
 ## WLED-GUI version 0.6.0
 - added an update notifier
