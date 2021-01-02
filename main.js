@@ -53,6 +53,9 @@ function createWorker() {
 // tray
 function createTray(params) {
   const iconPath = path.join(__dirname, "build", "icon.png");
+  const currentPath = path.resolve('.');
+  console.log("__dirname: " + __dirname);
+  console.log("currentPath: " + currentPath);
   console.log("Tray icon path: " + iconPath);
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
