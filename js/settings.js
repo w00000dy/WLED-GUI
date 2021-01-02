@@ -1,6 +1,16 @@
 document.getElementById("autostart").addEventListener("change", toggleAutostart);
+document.getElementById("autostartHidden").addEventListener("change", toggleAutostart);
+
+// create settings json
+if (localStorage.getItem("settings") === null) {
+    console.log("No settings local storage item found. Creating one...");
+    let settings = [];
+    json = JSON.stringify(settings);
+    localStorage.setItem("settings", settings);
+}
 
 checkAutostart();
+loadSettings();
 loadLights();
 
 // enabels or disables the autostart of wled-gui
@@ -11,13 +21,14 @@ function toggleAutostart() {
         name: 'WLED'
     });
 
-    // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
-    if (process.platform === "win32") {
-        wledAutoLauncher.opts.appPath += '" --hidden"'
-    } else {
-        wledAutoLauncher.opts.appPath += ' --hidden'
+    if (document.getElementById("autostartHidden").checked) {
+        // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
+        if (process.platform === "win32") {
+            wledAutoLauncher.opts.appPath += '" --hidden"'
+        } else {
+            wledAutoLauncher.opts.appPath += ' --hidden'
+        }
     }
-
     console.log(wledAutoLauncher)
 
     if (document.getElementById("autostart").checked) {
@@ -27,7 +38,10 @@ function toggleAutostart() {
     } else {
         console.log("Disable autostart");
         wledAutoLauncher.disable();
+        document.getElementById("autostartHidden").checked = false;
     }
+    document.getElementById("autostartHidden").disabled = !document.getElementById("autostart").checked;
+    saveSettings();
 }
 
 // check if autostart is already enabeld
@@ -42,6 +56,7 @@ function checkAutostart() {
 
     promise.then(function (value) {
         document.getElementById("autostart").checked = value;
+        document.getElementById("autostartHidden").disabled = !value;
     }
     );
 }
@@ -69,4 +84,26 @@ function addLightToAutostart(id, state) {
     let lights = JSON.parse(localStorage.getItem("lights"));
     lights[id].autostart = state;
     localStorage.setItem("lights", JSON.stringify(lights));
+}
+
+// saves settings into local storage
+function saveSettings() {
+    let settings = [
+        {
+            id: "autostartHidden",
+            type: "checkbox",
+            value: document.getElementById("autostartHidden").checked
+        }
+    ]
+    localStorage.setItem("settings", JSON.stringify(settings));
+}
+
+// loads settings from local storage
+function loadSettings() {
+    let settings = JSON.parse(localStorage.getItem("settings"));
+    settings.forEach(element => {
+        if (element.type === "checkbox") {
+            document.getElementById(element.id).checked = element.value;
+        }
+    });
 }

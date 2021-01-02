@@ -52,13 +52,13 @@ function createWorker() {
 }
 
 // tray
-function createTray(params) {
+function createTray() {
   let iconPath;
   if (dev) {
-    // icon path whyle developing
+    // icon path while developing
     iconPath = "build/icon.png";
   } else {
-    // these is the path after building the app
+    // this is the path after building the app
     const installPath = path.dirname(app.getPath("exe"));
     console.log("installPath: " + installPath);
     iconPath = path.join(installPath, "build", "icon.png");
@@ -72,6 +72,11 @@ function createTray(params) {
       }
     },
     {
+      label: 'Hide', click: function () {
+        win.hide();
+      }
+    },
+    {
       label: 'Close', click: function () {
         app.quit();
       }
@@ -79,6 +84,10 @@ function createTray(params) {
   ])
   tray.setToolTip('WLED')
   tray.setContextMenu(contextMenu)
+
+  tray.on('click', function () {
+    win.show();
+  });
 }
 
 // This method will be called when Electron has finished
