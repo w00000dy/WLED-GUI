@@ -16,8 +16,8 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "autostart": "electron . --hidden",
+    "start": "electron . --dev",
+    "autostart": "electron . --hidden --dev",
     "pack": "electron-builder --dir",
     "build": "electron-builder -mwl",
     "build windows": "electron-builder --windows",

@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, Tray } = require('electron')
 const path = require('path')
 
 const autostarted = process.argv.indexOf('--hidden') !== -1;
+const dev = process.argv.indexOf('--dev') !== -1;
 
 var win;
 var tray;
@@ -52,9 +53,16 @@ function createWorker() {
 
 // tray
 function createTray(params) {
-  const installPath = path.dirname(app.getPath("exe"));
-  const iconPath = path.join(installPath, "build", "icon.png");
-  console.log("installPath: " + installPath);
+  let iconPath;
+  if (dev) {
+    // icon path whyle developing
+    iconPath = "build/icon.png";
+  } else {
+    // these is the path after building the app
+    const installPath = path.dirname(app.getPath("exe"));
+    console.log("installPath: " + installPath);
+    iconPath = path.join(installPath, "build", "icon.png");
+  }
   console.log("Tray icon path: " + iconPath);
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
