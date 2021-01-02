@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray } = require('electron')
+const { app, BrowserWindow, Menu, Tray, nativeImage } = require('electron')
 const path = require('path')
 
 const autostarted = process.argv.indexOf('--hidden') !== -1;
@@ -54,7 +54,8 @@ function createWorker() {
 function createTray(params) {
   const iconPath = path.join(__dirname, "build", "icon.png");
   console.log("Tray icon path: " + iconPath);
-  tray = new Tray(iconPath)
+  tray = new Tray(nativeImage.createEmpty());
+  tray.setImage(nativeImage.createFromPath(iconPath));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Open', click: function () {
