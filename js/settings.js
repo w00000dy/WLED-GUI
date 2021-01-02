@@ -11,7 +11,12 @@ function toggleAutostart() {
         name: 'WLED'
     });
 
-    wledAutoLauncher.opts.appPath += '" --hidden"'
+    // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
+    if (process.platform === "win32") {
+        wledAutoLauncher.opts.appPath += '" --hidden"'
+    } else {
+        wledAutoLauncher.opts.appPath += ' --hidden'
+    }
 
     console.log(wledAutoLauncher)
 
