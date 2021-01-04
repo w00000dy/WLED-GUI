@@ -1,5 +1,6 @@
 document.getElementById("autostart").addEventListener("change", toggleAutostart);
 document.getElementById("autostartHidden").addEventListener("change", toggleAutostart);
+document.getElementById("tray").addEventListener("change", toggleTray);
 
 // create settings json
 if (localStorage.getItem("settings") === null) {
@@ -22,6 +23,7 @@ function toggleAutostart() {
     });
 
     if (document.getElementById("autostartHidden").checked) {
+        document.getElementById("tray").checked = true;
         // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
         if (process.platform === "win32") {
             wledAutoLauncher.opts.appPath += '" --hidden"'
@@ -41,6 +43,14 @@ function toggleAutostart() {
         document.getElementById("autostartHidden").checked = false;
     }
     document.getElementById("autostartHidden").disabled = !document.getElementById("autostart").checked;
+    saveSettings();
+}
+
+// enabels or disables the tray icon of wled-gui
+function toggleTray() {
+    if (document.getElementById("autostartHidden").checked) {
+        this.checked = true;
+    }
     saveSettings();
 }
 
@@ -93,6 +103,11 @@ function saveSettings() {
             id: "autostartHidden",
             type: "checkbox",
             value: document.getElementById("autostartHidden").checked
+        },
+        {
+            id: "tray",
+            type: "checkbox",
+            value: document.getElementById("tray").checked
         }
     ]
     localStorage.setItem("settings", JSON.stringify(settings));
