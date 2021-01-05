@@ -22,15 +22,30 @@ function toggleAutostart() {
         name: 'WLED'
     });
 
-    if (document.getElementById("autostartHidden").checked) {
-        document.getElementById("tray").checked = true;
+    if (document.getElementById("autostartHidden").checked || document.getElementById("tray").checked) {
         // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
         if (process.platform === "win32") {
-            wledAutoLauncher.opts.appPath += '" --hidden"'
-        } else {
-            wledAutoLauncher.opts.appPath += ' --hidden'
+            wledAutoLauncher.opts.appPath += '"'
         }
     }
+
+    if (document.getElementById("autostartHidden").checked) {
+        document.getElementById("tray").checked = true;
+        wledAutoLauncher.opts.appPath += ' --hidden'
+
+    }
+
+    if (document.getElementById("tray").checked) {
+        wledAutoLauncher.opts.appPath += '" --tray"'
+    }
+
+    if (document.getElementById("autostartHidden").checked || document.getElementById("tray").checked) {
+        // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
+        if (process.platform === "win32") {
+            wledAutoLauncher.opts.appPath += '"'
+        }
+    }
+    
     console.log(wledAutoLauncher)
 
     if (document.getElementById("autostart").checked) {
