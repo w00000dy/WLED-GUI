@@ -10,19 +10,19 @@ for (let index = 0; index < lights.length; index++) {
     }
 }
 
-console.log(needAutostart.length);
+log.debug("Autostarted lights: " + needAutostart);
 
 if (needAutostart.length === 0) {
     window.close();
 } else {
     for (let index = 0; index < needAutostart.length; index++) {
         let ip = needAutostart[index];
-        console.log("Turn on " + ip);
+        log.verbose("Turn on " + ip);
         let xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://' + ip + "/win&T=1", true);
         xhr.onload = function () {
             if (index === (needAutostart.length - 1)) {
-                console.log("close");
+                log.debug("close");
                 window.close();
             }
         };
