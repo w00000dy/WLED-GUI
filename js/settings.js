@@ -4,7 +4,7 @@ document.getElementById("tray").addEventListener("change", toggleTray);
 
 // create settings json
 if (localStorage.getItem("settings") === null) {
-    console.log("No settings local storage item found. Creating one...");
+    log.verbose("No settings local storage item found. Creating one...");
     let settings = [];
     json = JSON.stringify(settings);
     localStorage.setItem("settings", settings);
@@ -22,38 +22,32 @@ function toggleAutostart() {
         name: 'WLED'
     });
 
-    if (document.getElementById("autostartHidden").checked || document.getElementById("tray").checked) {
-        // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
-        if (process.platform === "win32") {
-            wledAutoLauncher.opts.appPath += '"'
-        }
-    }
-
     if (document.getElementById("autostartHidden").checked) {
         document.getElementById("tray").checked = true;
-        wledAutoLauncher.opts.appPath += ' --hidden'
-
-    }
-
-    if (document.getElementById("tray").checked) {
-        wledAutoLauncher.opts.appPath += '" --tray"'
-    }
-
-    if (document.getElementById("autostartHidden").checked || document.getElementById("tray").checked) {
         // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
         if (process.platform === "win32") {
-            wledAutoLauncher.opts.appPath += '"'
+            wledAutoLauncher.opts.appPath += '" --hidden"'
+        } else {
+            wledAutoLauncher.opts.appPath += ' --hidden'
         }
     }
-    
-    console.log(wledAutoLauncher)
+    else if (document.getElementById("tray").checked) {
+        // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
+        if (process.platform === "win32") {
+            wledAutoLauncher.opts.appPath += '" --tray"'
+        } else {
+            wledAutoLauncher.opts.appPath += ' --tray'
+        }
+    }
+
+    log.debug(wledAutoLauncher)
 
     if (document.getElementById("autostart").checked) {
-        console.log("Enable autostart");
+        log.verbose("Enable autostart");
         wledAutoLauncher.enable();
 
     } else {
-        console.log("Disable autostart");
+        log.verbose("Disable autostart");
         wledAutoLauncher.disable();
         document.getElementById("autostartHidden").checked = false;
     }

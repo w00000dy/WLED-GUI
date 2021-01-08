@@ -1,5 +1,19 @@
 const { app, BrowserWindow, Menu, Tray } = require('electron')
 const path = require('path')
+const log = require('electron-log');
+
+/* LOG LEVEL */
+// log.transports.console.level = "error";
+// log.transports.console.level = "warn";
+// log.transports.console.level = "info";
+// log.transports.console.level = "verbose";
+// log.transports.console.level = "debug";
+// log.transports.console.level = "silly";
+
+log.info('WLED-GUI started');
+
+log.debug("Start arguments:");
+log.debug(process.argv);
 
 const autostarted = process.argv.indexOf('--hidden') !== -1;
 const dev = process.argv.indexOf('--dev') !== -1;
@@ -32,10 +46,10 @@ function createWindow() {
 
   // check if app was autostarted
   if (autostarted) {
-    console.log('App is started by AutoLaunch');
+    log.verbose('App is started by AutoLaunch');
   }
   else {
-    console.log('App is started by User');
+    log.verbose('App is started by User');
     win.once('ready-to-show', () => {
       win.show()
     })
@@ -60,10 +74,10 @@ function createTray() {
   } else {
     // this is the path after building the app
     const installPath = path.dirname(app.getPath("exe"));
-    console.log("installPath: " + installPath);
+    log.debug("installPath: " + installPath);
     iconPath = path.join(installPath, "build", "icon.png");
   }
-  console.log("Tray icon path: " + iconPath);
+  log.debug("Tray icon path: " + iconPath);
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -90,18 +104,39 @@ function createTray() {
   });
 }
 
+function checkTray() {
+  if (autostarted) {
+    createTray();
+  } else {
+    win.webContents
+      .executeJavaScript('localStorage.getItem("settings");')
+      .then(result => {
+        if (result !== null) {
+          let settings = JSON.parse(result);
+          log.debug("Settings:");
+          log.debug(settings);
+          // show tray only if enabled
+          if (settings[1].value) {
+            createTray();
+          }
+        }
+      });
+  }
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
 app.whenReady().then(createWorker)
-app.whenReady().then(createTray)
+app.whenReady().then(checkTray)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    log.info('WLED-GUI quitted');
     app.quit()
   }
 })
