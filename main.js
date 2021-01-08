@@ -92,7 +92,10 @@ function createTray() {
     },
     {
       label: 'Close', click: function () {
-        app.quit();
+        if (process.platform !== 'darwin') {
+          log.info('WLED-GUI quitted');
+          app.quit()
+        }
       }
     },
   ])
