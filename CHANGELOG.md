@@ -1,6 +1,6 @@
 # WLED-GUI changelog
 
-## WLED-GUI version 0.6.1
+## WLED-GUI version 0.7.0
 - added settings page
 - added autostart option
 - added autostart hidden option
@@ -8,6 +8,7 @@
 - the window will now show when the renderer process has rendered the page (no visual flash anymore)
 - added tray icon option
 - added log file
+- added option to turn on lights automatically only at autostart
 
 ## WLED-GUI version 0.6.0
 - added an update notifier

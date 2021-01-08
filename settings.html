@@ -63,16 +63,36 @@
         </table>
         <p class="red-text hidden" style="display: none;" id="restartRequired">You must restart this program to apply these changes</p>
         <br>
-        <ul class="collection with-header" id="autoTurnOn" style="text-align: left;">
-            <li class="collection-header" style="text-align: center;">
-                <h5>Turn on lights automatically at startup</h5>
-            </li>
-        </ul>
+        <div style=" border: 2px solid white; border-radius: 0px 0px 25px 25px;">
+            <ul class="collection with-header" id="autoTurnOn" style="text-align: left; margin-top: 0px;">
+                <li class="collection-header" style="text-align: center;">
+                    <h5>Turn on lights automatically at startup
+                </li>
+            </ul>
+            <table>
+                <tr>
+                    <td>Turn on lights automatically only at autostart</td>
+                    <td>
+                        <div class="switch">
+                            <label>
+                                Off
+                                <input type="checkbox" id="autoTurnOnOnlyAtAutostart">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <script src="js/materialize.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/settings.js"></script>
+    <script>
+        M.AutoInit();
+    </script>
 
 </body>
 

@@ -1,6 +1,7 @@
 document.getElementById("autostart").addEventListener("change", toggleAutostart);
 document.getElementById("autostartHidden").addEventListener("change", toggleAutostart);
 document.getElementById("tray").addEventListener("change", toggleTray);
+document.getElementById("autoTurnOnOnlyAtAutostart").addEventListener("change", toggleLightAutostartOnlyAtAutostart);
 
 // create settings json
 if (localStorage.getItem("settings") === null) {
@@ -113,6 +114,11 @@ function addLightToAutostart(id, state) {
     localStorage.setItem("lights", JSON.stringify(lights));
 }
 
+// toggels if lights should turn on on every start or only on autostart
+function toggleLightAutostartOnlyAtAutostart() {
+    saveSettings();
+}
+
 // saves settings into local storage
 function saveSettings() {
     let settings = [
@@ -125,6 +131,11 @@ function saveSettings() {
             id: "tray",
             type: "checkbox",
             value: document.getElementById("tray").checked
+        },
+        {
+            id: "autoTurnOnOnlyAtAutostart",
+            type: "checkbox",
+            value: document.getElementById("autoTurnOnOnlyAtAutostart").checked
         }
     ]
     localStorage.setItem("settings", JSON.stringify(settings));

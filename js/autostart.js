@@ -1,3 +1,5 @@
+const log = require('electron-log');
+
 //    This is used to turn on lights automatically at startup
 
 var lights = JSON.parse(localStorage.getItem("lights"));
