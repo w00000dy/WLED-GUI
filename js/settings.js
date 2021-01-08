@@ -24,6 +24,10 @@ function toggleAutostart() {
 
     if (document.getElementById("autostartHidden").checked) {
         document.getElementById("tray").checked = true;
+        let settings = JSON.parse(localStorage.getItem("settings"));
+        if (settings[1].value !== document.getElementById("tray").checked) {
+            document.getElementById("restartRequired").style.display = "block";
+        }
         // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
         if (process.platform === "win32") {
             wledAutoLauncher.opts.appPath += '" --hidden"'
@@ -40,7 +44,7 @@ function toggleAutostart() {
         }
     }
 
-    log.debug(wledAutoLauncher)
+    log.debug("AutoLaunch appPath: " + wledAutoLauncher.opts.appPath)
 
     if (document.getElementById("autostart").checked) {
         log.verbose("Enable autostart");
@@ -59,6 +63,10 @@ function toggleAutostart() {
 function toggleTray() {
     if (document.getElementById("autostartHidden").checked) {
         this.checked = true;
+    }
+    let settings = JSON.parse(localStorage.getItem("settings"));
+    if (settings[1].checked !== this.checked && !document.getElementById("autostartHidden").checked) {
+        document.getElementById("restartRequired").style.display = "block";
     }
     saveSettings();
 }
