@@ -110,6 +110,26 @@ function createTray() {
   });
 }
 
+function checkWorker() {
+  if (autostarted) {
+    createWorker();
+  } else {
+    win.webContents
+      .executeJavaScript('localStorage.getItem("settings");')
+      .then(result => {
+        if (result !== null) {
+          let settings = JSON.parse(result);
+          log.debug("Settings:");
+          log.debug(settings);
+          // start worker only if enabled
+          if (!settings[2].value) {
+            createWorker();
+          }
+        }
+      });
+  }
+}
+
 function checkTray() {
   if (autostarted) {
     createTray();
@@ -134,25 +154,7 @@ function checkTray() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
-app.whenReady().then(function () {
-  if (autostarted) {
-    createWorker();
-  } else {
-    win.webContents
-      .executeJavaScript('localStorage.getItem("settings");')
-      .then(result => {
-        if (result !== null) {
-          let settings = JSON.parse(result);
-          log.debug("Settings:");
-          log.debug(settings);
-          // show tray only if enabled
-          if (!settings[2].value) {
-            createWorker();
-          }
-        }
-      });
-  }
-})
+app.whenReady().then(checkWorker)
 app.whenReady().then(checkTray)
 
 // Quit when all windows are closed, except on macOS. There, it's common
