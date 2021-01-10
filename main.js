@@ -39,7 +39,7 @@ function createWindow() {
   win.loadFile('index.html')
 
   // remove menubar
-  // win.removeMenu()
+  win.removeMenu()
 
   // Open the DevTools.
   // win.webContents.openDevTools()
