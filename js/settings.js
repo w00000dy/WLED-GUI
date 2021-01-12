@@ -6,9 +6,7 @@ document.getElementById("autoTurnOnOnlyAtAutostart").addEventListener("change", 
 // create settings json
 if (localStorage.getItem("settings") === null) {
     log.verbose("No settings local storage item found. Creating one...");
-    let settings = [];
-    json = JSON.stringify(settings);
-    localStorage.setItem("settings", settings);
+    saveSettings();
 }
 
 checkAutostart();
