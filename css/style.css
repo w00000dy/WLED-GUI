@@ -15,17 +15,11 @@ ul {
     width: 100%;
     overflow: hidden;
     background-color: #333333;
+    color: black;
   }
 
 img {
     cursor: pointer;
-}
-
-table {
-    width: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
 }
 
 td, th {
@@ -101,3 +95,23 @@ input, select, textarea{
 ::placeholder {
     color: rgba(255, 255, 255, 0.5)
   }
+
+.settings {
+    width: 90%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    transition: width 1s;
+}
+
+@media only screen and (min-width: 534px) { 			
+    .settings {
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width: 950px) { 			
+    .settings {
+        width: 50%;
+    }
+} 

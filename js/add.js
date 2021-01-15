@@ -6,12 +6,13 @@ document.getElementById("scanMethod").addEventListener("change", checkMethod);
 // search for wled devices and add them
 function scan(bonjour) {
     if (document.getElementById("scanMethod").value === "bruteforce") {
-        console.log("Scan method: bruteforce");
+        log.verbose("Scan method: bruteforce");
         // get IP of device
         let os = require('os');
         var interfaces = os.networkInterfaces();
         var addresses = [];
-        console.log(interfaces);
+        log.silly("Interfaces:");
+        log.silly(interfaces);
         for (var k in interfaces) {
             for (var k2 in interfaces[k]) {
                 var address = interfaces[k][k2];
@@ -20,8 +21,8 @@ function scan(bonjour) {
                 }
             }
         }
-
-        console.log(addresses);
+        log.debug("Subnets:");
+        log.debug(addresses);
 
         // generate array with all possible ips of network
         for (let index = 0; index < addresses.length; index++) {
@@ -33,12 +34,12 @@ function scan(bonjour) {
             }
         }
 
-        console.log(ip);
+        log.silly("All possible ips of network:");
+        log.silly(ip);
 
         // checks for each element in an array if its a wled device
         ip.forEach(element => {
             checkWled(element, function (wled) {
-                console.log(wled);
                 if (wled !== false && wled !== true) {
                     addLight(wled.name, wled.ip);
                 }
@@ -47,14 +48,13 @@ function scan(bonjour) {
 
     }
     if (document.getElementById("scanMethod").value === "bonjour") {
-        console.log("Scan method: bonjour");
+        log.verbose("Scan method: bonjour");
 
         // browse for all http services
         bonjour.find({ type: "http" }, function (service) {
             let ip = service["addresses"][0];
-            console.log('IP: ', ip)
+            log.debug("found IP: " + ip)
             checkWled(ip, function (wled) {
-                console.log(wled);
                 if (wled !== false && wled !== true) {
                     addLight(wled.name, wled.ip);
                 }
@@ -77,7 +77,7 @@ function checkWled(ip, callback) {
         }
         if (json.brand === "WLED") {
             if (checkIP(ip) === false) {
-                console.log("WLED " + ip + " found!")
+                log.verbose("WLED " + ip + " found!")
                 let name = json.name;
                 let light = {
                     name: name,
@@ -150,15 +150,16 @@ function checkMethod() {
 // adds a light and save it to localstorge
 function addLightManually() {
     let ip = document.getElementById("ip").value;
-    console.log(ip);
+    log.verbose("Add " + ip + " light manually");
     checkWled(ip, function (wled) {
-        console.log(wled);
         if (wled !== false && wled !== true) {
             addLight(wled.name, wled.ip);
             location.href = "index.html";
         } else if (wled === true) {
+            log.warn("Light hasn't been added, because device already exists.");
             M.toast({ html: 'Error! Device already exists.' });
         } else {
+            log.warn("Light hasn't been added, because connect to WLED.");
             M.toast({ html: 'Error! Can\'t connect to WLED.' });
         }
     });
@@ -170,10 +171,14 @@ function addLight(name, ip) {
     let light = {
         name: name,
         ip: ip,
-        online: true
+        online: true,
+        on: false,
+        version: "unknown",
+        autostart: false
     };
     let lights = JSON.parse(localStorage.getItem("lights"));
-    console.log(lights);
+    log.verbose("Add light and save to local storage");
+    log.debug(light);
     lights.push(light);
     json = JSON.stringify(lights);
     localStorage.setItem("lights", json);

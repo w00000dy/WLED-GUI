@@ -7,10 +7,10 @@ function checkVersion(version) {
   }
 
 if (typeof supportedVersions.find(checkVersion) !== "undefined") {
-    console.log("Using version " + locVersion);
+    log.debug("Using version " + locVersion);
     document.write("<iframe src=\"wled/wled_v" + locVersion + ".htm\"></iframe>");
 } else {
     let version = supportedVersions[supportedVersions.length - 1]; // use latest version
-    console.log("Using version " + version);
+    log.debug("Using version " + version);
     document.write("<iframe src=\"wled/wled_v" + version + ".htm\"></iframe>");
 }

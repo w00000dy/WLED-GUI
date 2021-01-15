@@ -5,7 +5,7 @@
     "name": "Woody",
     "email": "27882680+WoodyLetsCode@users.noreply.github.com"
   },
-  "version": "0.6.1",
+  "version": "0.7.0",
   "homepage": "https://github.com/WoodyLetsCode/WLED-GUI",
   "bugs": {
     "url": "https://github.com/WoodyLetsCode/WLED-GUI/issues"
@@ -16,7 +16,8 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron . --dev",
+    "autostart": "electron . --hidden --dev",
     "pack": "electron-builder --dir",
     "build": "electron-builder -mwl",
     "build windows": "electron-builder --windows",
@@ -45,16 +46,20 @@
       "category": "public.app-category.lifestyle"
     },
     "linux": {
-      "icon": "build/256x256.png",
+      "icon": "build/icon.icns",
       "category": "Network"
-    }
+    },
+    "extraFiles": [
+      "build/icon.png"
+    ]
   },
   "devDependencies": {
-    "electron": "^11.1.0",
+    "electron": "^11.1.1",
     "electron-builder": "^22.9.1"
   },
   "dependencies": {
     "auto-launch": "^5.0.5",
-    "bonjour": "^3.5.0"
+    "bonjour": "^3.5.0",
+    "electron-log": "^4.3.1"
   }
 }

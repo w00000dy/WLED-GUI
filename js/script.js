@@ -1,3 +1,5 @@
+const log = require('electron-log');
+
 document.getElementById("logo").addEventListener("click", openRepositorie);
 // the imgClicked variable prevents the goToWled() function from beeing triggerd when clicking in a button
 var imgClicked = false;
@@ -5,8 +7,8 @@ var imgClicked = false;
 // Light mode
 if (localStorage.getItem("wledUiCfg") === null) {
     var ui = {
-        "theme": {
-            "base": "dark"
+        theme: {
+            base: "dark"
         }
     };
 } else {
@@ -19,7 +21,7 @@ if (localStorage.getItem("wledUiCfg") === null) {
 
 // create json
 if (localStorage.getItem("lights") === null) {
-    console.log("No local storage item found. Creating one...");
+    log.verbose("No local storage item found. Creating one...");
     var lights = [];
     json = JSON.stringify(lights);
     localStorage.setItem("lights", json);
