@@ -5,7 +5,7 @@ const log = require('electron-log');
 /* LOG LEVEL */
 // log.transports.console.level = "error";
 // log.transports.console.level = "warn";
-// log.transports.console.level = "info";
+log.transports.console.level = "info";
 // log.transports.console.level = "verbose";
 // log.transports.console.level = "debug";
 // log.transports.console.level = "silly";
