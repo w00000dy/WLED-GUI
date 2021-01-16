@@ -33,6 +33,7 @@
   },
   "build": {
     "productName": "WLED",
+    "artifactName": "${productName}-${version}-${os}.${ext}",
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
@@ -50,7 +51,10 @@
       "category": "Network"
     },
     "extraFiles": [
-      "build/icon.png"
+      "build/icon.png",
+      "build/trayIcon.png",
+      "build/trayIcon@2x.png",
+      "build/trayIcon@4x.png"
     ]
   },
   "devDependencies": {
