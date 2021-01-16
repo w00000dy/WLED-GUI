@@ -83,6 +83,7 @@ function createWorker() {
 function createTray() {
   let iconFile;
   let iconPath;
+  // tray icon for macOS
   if (process.platform === 'darwin') {
     iconFile = "trayIcon.png";
   } else {

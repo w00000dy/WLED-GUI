@@ -1,4 +1,5 @@
 const log = require('electron-log');
+log.catchErrors();
 
 document.getElementById("logo").addEventListener("click", openRepositorie);
 // the imgClicked variable prevents the goToWled() function from beeing triggerd when clicking in a button
