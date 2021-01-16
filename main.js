@@ -72,15 +72,21 @@ function createWorker() {
 
 // tray
 function createTray() {
+  let iconFile;
   let iconPath;
+  if (process.platform === 'darwin') {
+    iconFile = "trayIcon.png";
+  } else {
+    iconFile = "icon.png";
+  }
   if (dev) {
     // icon path while developing
-    iconPath = "build/icon.png";
+    iconPath = "build/" + iconFile;
   } else {
     // this is the path after building the app
     const installPath = path.dirname(app.getPath("exe"));
     log.debug("installPath: " + installPath);
-    iconPath = path.join(installPath, "build", "icon.png");
+    iconPath = path.join(installPath, "build", iconFile);
   }
   log.debug("Tray icon path: " + iconPath);
   tray = new Tray(iconPath)
