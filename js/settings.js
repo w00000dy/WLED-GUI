@@ -15,6 +15,7 @@ loadLights();
 
 // Opens Github settings wiki page in default browser
 function openWiki() {
+    log.verbose("Opens Github settings wiki page in default browser");
     const { shell } = require('electron')
     shell.openExternal('https://github.com/WoodyLetsCode/WLED-GUI/wiki/Settings')
 }
@@ -38,14 +39,6 @@ function toggleAutostart() {
             wledAutoLauncher.opts.appPath += '" --hidden"'
         } else {
             wledAutoLauncher.opts.appPath += ' --hidden'
-        }
-    }
-    else if (document.getElementById("tray").checked) {
-        // double quotes because auto-launch automatically encloses the appPath with double quotes when writing to the registry
-        if (process.platform === "win32") {
-            wledAutoLauncher.opts.appPath += '" --tray"'
-        } else {
-            wledAutoLauncher.opts.appPath += ' --tray'
         }
     }
 
@@ -78,6 +71,7 @@ function toggleTray() {
 
 // check if autostart is already enabeld
 function checkAutostart() {
+    log.verbose("Check if autostart is already enabeld");
     const AutoLaunch = require('auto-launch');
 
     let wledAutoLauncher = new AutoLaunch({
@@ -87,6 +81,7 @@ function checkAutostart() {
     let promise = wledAutoLauncher.isEnabled();
 
     promise.then(function (value) {
+        log.debug("Autostart: " + value);
         document.getElementById("autostart").checked = value;
         document.getElementById("autostartHidden").disabled = !value;
     }
@@ -95,9 +90,11 @@ function checkAutostart() {
 
 // loads the lights into the list
 function loadLights() {
+    log.verbose("loads the lights into the list");
     let lights = JSON.parse(localStorage.getItem("lights"));
     for (let index = 0; index < lights.length; index++) {
         const element = lights[index];
+        log.debug("Add light " + element.name + " to list");
         document.getElementById("autoTurnOn").innerHTML += "<li class=\"collection-item\"><div>" + element.name + "<a class=\"secondary-content\"><div class=\"switch\"><label>Off<input type=\"checkbox\" id=\"lightAutostart" + index + "\" onchange=\"addLightToAutostart(" + index + ", this.checked)\"><span class=\"lever\"></span>On</label></div></a></div></li>";
     }
     checkLightAutostart(lights);
@@ -105,8 +102,10 @@ function loadLights() {
 
 // check if autostart is already enabeld for a light
 function checkLightAutostart(lights) {
+    log.verbose("check if autostart is already enabeld for a light");
     for (let index = 0; index < lights.length; index++) {
         let autostart = lights[index].autostart;
+        log.debug("Autostart is " + autostart + " for light " + lights[index].name);
         document.getElementById("lightAutostart" + index).checked = autostart;
     }
 }
@@ -125,6 +124,7 @@ function toggleLightAutostartOnlyAtAutostart() {
 
 // saves settings into local storage
 function saveSettings() {
+    log.verbose("saves settings into local storage");
     let settings = [
         {
             id: "autostartHidden",
@@ -142,14 +142,17 @@ function saveSettings() {
             value: document.getElementById("autoTurnOnOnlyAtAutostart").checked
         }
     ]
+    log.debug(settings);
     localStorage.setItem("settings", JSON.stringify(settings));
 }
 
 // loads settings from local storage
 function loadSettings() {
+    log.verbose("load settings from local storage");
     let settings = JSON.parse(localStorage.getItem("settings"));
     settings.forEach(element => {
         if (element.type === "checkbox") {
+            log.debug("Set checkbox with id " + element.id + " to " + element.value);
             document.getElementById(element.id).checked = element.value;
         }
     });
