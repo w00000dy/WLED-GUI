@@ -4,11 +4,19 @@ const log = require('electron-log');
 
 /* LOG LEVEL */
 // log.transports.console.level = "error";
+// log.transports.file.level = "error";
 // log.transports.console.level = "warn";
-// log.transports.console.level = "info";
+// log.transports.file.level = "warn";
+log.transports.console.level = "info";
+log.transports.file.level = "info";
 // log.transports.console.level = "verbose";
+// log.transports.file.level = "verbose";
 // log.transports.console.level = "debug";
+// log.transports.file.level = "debug";
 // log.transports.console.level = "silly";
+// log.transports.file.level = "silly";
+
+log.catchErrors();
 
 log.info('WLED-GUI started');
 
@@ -20,6 +28,7 @@ const dev = process.argv.indexOf('--dev') !== -1;
 
 var win;
 var tray;
+var settings;
 
 function createWindow() {
   // Create the browser window.
@@ -118,23 +127,27 @@ function createTray() {
   });
 }
 
+function loadSettings() {
+  // read settings form localstorage
+  win.webContents.executeJavaScript('localStorage.getItem("settings");').then(result => {
+    settings = JSON.parse(result);
+    log.debug("Settings:");
+    log.debug(settings);
+    checkWorker();
+    checkTray();
+  });
+}
+
 function checkWorker() {
   if (autostarted) {
     createWorker();
   } else {
-    win.webContents
-      .executeJavaScript('localStorage.getItem("settings");')
-      .then(result => {
-        if (result !== null) {
-          let settings = JSON.parse(result);
-          log.debug("Settings:");
-          log.debug(settings);
-          // start worker only if enabled
-          if (!settings[2].value) {
-            createWorker();
-          }
-        }
-      });
+    if (settings !== null) {
+      // start worker only if enabled
+      if (!settings[2].value) {
+        createWorker();
+      }
+    }
   }
 }
 
@@ -142,19 +155,12 @@ function checkTray() {
   if (autostarted) {
     createTray();
   } else {
-    win.webContents
-      .executeJavaScript('localStorage.getItem("settings");')
-      .then(result => {
-        if (result !== null) {
-          let settings = JSON.parse(result);
-          log.debug("Settings:");
-          log.debug(settings);
-          // show tray only if enabled
-          if (settings[1].value) {
-            createTray();
-          }
-        }
-      });
+    if (settings !== null) {
+      // show tray only if enabled
+      if (settings[1].value) {
+        createTray();
+      }
+    }
   }
 }
 
@@ -162,8 +168,7 @@ function checkTray() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(createWindow)
-app.whenReady().then(checkWorker)
-app.whenReady().then(checkTray)
+app.whenReady().then(loadSettings)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

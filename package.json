@@ -5,7 +5,7 @@
     "name": "Woody",
     "email": "27882680+WoodyLetsCode@users.noreply.github.com"
   },
-  "version": "0.6.1",
+  "version": "0.7.0",
   "homepage": "https://github.com/WoodyLetsCode/WLED-GUI",
   "bugs": {
     "url": "https://github.com/WoodyLetsCode/WLED-GUI/issues"
@@ -46,7 +46,7 @@
       "category": "public.app-category.lifestyle"
     },
     "linux": {
-      "icon": "build/256x256.png",
+      "icon": "build/icon.icns",
       "category": "Network"
     },
     "extraFiles": [

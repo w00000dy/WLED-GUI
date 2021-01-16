@@ -9,6 +9,7 @@
 - added tray icon option
 - added log file
 - added option to turn on lights automatically only at autostart
+- fixed #6
 
 ## WLED-GUI version 0.6.0
 - added an update notifier
