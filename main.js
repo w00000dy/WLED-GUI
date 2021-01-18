@@ -170,7 +170,7 @@ function alertLogFile() {
   let file = log.transports.file.getFile();
   log.debug(file.path);
   let options = {
-    title: "Lod file path",
+    title: "Log file path",
     body: file.path
   }
 
