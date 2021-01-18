@@ -31,8 +31,9 @@ var win;
 var tray;
 var settings;
 
-function createWindow() {
   // Create the browser window.
+function createWindow() {
+  log.debug("Create browser windows");
   win = new BrowserWindow({
     width: 1263,
     height: 900,
@@ -68,8 +69,9 @@ function createWindow() {
   }
 }
 
+// create hidden worker window
 function createWorker() {
-  // create hidden worker window
+  log.debug("Create autostart worker window");
   const workerWindow = new BrowserWindow({
     show: false,
     webPreferences: {
@@ -82,6 +84,7 @@ function createWorker() {
 
 // tray
 function createTray() {
+  log.debug("Create tray icon");
   let iconFile;
   let iconPath;
   // tray icon for macOS
