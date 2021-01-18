@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray } = require('electron')
+const { app, BrowserWindow, Menu, Tray, Notification } = require('electron')
 const path = require('path')
 const log = require('electron-log');
 
@@ -7,12 +7,12 @@ const log = require('electron-log');
 // log.transports.file.level = "error";
 // log.transports.console.level = "warn";
 // log.transports.file.level = "warn";
-log.transports.console.level = "info";
-log.transports.file.level = "info";
+// log.transports.console.level = "info";
+// log.transports.file.level = "info";
 // log.transports.console.level = "verbose";
 // log.transports.file.level = "verbose";
-// log.transports.console.level = "debug";
-// log.transports.file.level = "debug";
+log.transports.console.level = "debug";
+log.transports.file.level = "debug";
 // log.transports.console.level = "silly";
 // log.transports.file.level = "silly";
 
@@ -166,6 +166,18 @@ function checkTray() {
   }
 }
 
+function alertLogFile() {
+  let file = log.transports.file.getFile();
+  log.debug(file.path);
+  let options = {
+    title: "Lod file path",
+    body: file.path
+  }
+
+  let alert = new Notification(options)
+  alert.show();
+}
+
 // check if second instance was started
 if (!gotTheLock) {
   log.info('WLED-GUI quitted');
@@ -183,6 +195,7 @@ if (!gotTheLock) {
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(createWindow)
   app.whenReady().then(loadSettings)
+  app.whenReady().then(alertLogFile)
 
   // Quit when all windows are closed, except on macOS. There, it's common
   // for applications and their menu bar to stay active until the user quits
