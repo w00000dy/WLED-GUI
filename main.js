@@ -39,7 +39,6 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1263,
     height: 900,
-    icon: iconDir + "icon.png",
     show: false,
     webPreferences: {
       nodeIntegration: true,
