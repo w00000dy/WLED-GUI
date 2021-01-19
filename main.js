@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, Notification } = require('electron')
+const { app, BrowserWindow, Menu, Tray } = require('electron')
 const path = require('path')
 const log = require('electron-log');
 
@@ -26,18 +26,20 @@ log.debug(process.argv);
 const gotTheLock = app.requestSingleInstanceLock()
 const autostarted = process.argv.indexOf('--hidden') !== -1;
 const dev = process.argv.indexOf('--dev') !== -1;
+const iconDir = getIconDir();
+log.debug("iconDir: " + iconDir);
 
 var win;
 var tray;
 var settings;
 
-  // Create the browser window.
+// Create the browser window.
 function createWindow() {
-  log.debug("Create browser windows");
+  log.debug("Create browser window");
   win = new BrowserWindow({
     width: 1263,
     height: 900,
-    icon: "build/icon.png",
+    icon: iconDir + "icon.png",
     show: false,
     webPreferences: {
       nodeIntegration: true,
@@ -93,15 +95,7 @@ function createTray() {
   } else {
     iconFile = "icon.png";
   }
-  if (dev) {
-    // icon path while developing
-    iconPath = "build/" + iconFile;
-  } else {
-    // this is the path after building the app
-    const installPath = path.dirname(app.getPath("exe"));
-    log.debug("installPath: " + installPath);
-    iconPath = path.join(installPath, "build", iconFile);
-  }
+  iconPath = path.join(iconDir, iconFile);
   log.debug("Tray icon path: " + iconPath);
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
@@ -132,8 +126,9 @@ function createTray() {
   });
 }
 
+// read settings from localstorage
 function loadSettings() {
-  // read settings form localstorage
+  log.debug("Load settings from localstorage");
   win.webContents.executeJavaScript('localStorage.getItem("settings");').then(result => {
     settings = JSON.parse(result);
     log.debug("Settings:");
@@ -169,16 +164,16 @@ function checkTray() {
   }
 }
 
-function alertLogFile() {
-  let file = log.transports.file.getFile();
-  log.debug(file.path);
-  let options = {
-    title: "Log file path",
-    body: file.path
+function getIconDir() {
+  const installPath = path.dirname(app.getPath("exe"));
+  log.debug("installPath: " + installPath);
+  let dir;
+  if (dev) {
+    dir = "build/";
+  } else {
+    dir = path.join(installPath, "build");
   }
-
-  let alert = new Notification(options)
-  alert.show();
+  return dir;
 }
 
 // check if second instance was started
@@ -198,7 +193,6 @@ if (!gotTheLock) {
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(createWindow)
   app.whenReady().then(loadSettings)
-  app.whenReady().then(alertLogFile)
 
   // Quit when all windows are closed, except on macOS. There, it's common
   // for applications and their menu bar to stay active until the user quits
