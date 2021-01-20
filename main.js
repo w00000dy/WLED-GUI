@@ -169,7 +169,10 @@ function getIconDir() {
   let dir;
   if (dev) {
     dir = "build/";
-  } else {
+  } else if (process.platform === 'darwin') {
+    dir = path.join(installPath, "../", "build");
+  }
+  else {
     dir = path.join(installPath, "build");
   }
   return dir;
