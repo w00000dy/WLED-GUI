@@ -26,17 +26,19 @@ log.debug(process.argv);
 const gotTheLock = app.requestSingleInstanceLock()
 const autostarted = process.argv.indexOf('--hidden') !== -1;
 const dev = process.argv.indexOf('--dev') !== -1;
+const iconDir = getIconDir();
+log.debug("iconDir: " + iconDir);
 
 var win;
 var tray;
 var settings;
 
+// Create the browser window.
 function createWindow() {
-  // Create the browser window.
+  log.debug("Create browser window");
   win = new BrowserWindow({
     width: 1263,
     height: 900,
-    icon: "build/icon.png",
     show: false,
     webPreferences: {
       nodeIntegration: true,
@@ -68,8 +70,9 @@ function createWindow() {
   }
 }
 
+// create hidden worker window
 function createWorker() {
-  // create hidden worker window
+  log.debug("Create autostart worker window");
   const workerWindow = new BrowserWindow({
     show: false,
     webPreferences: {
@@ -82,6 +85,7 @@ function createWorker() {
 
 // tray
 function createTray() {
+  log.debug("Create tray icon");
   let iconFile;
   let iconPath;
   // tray icon for macOS
@@ -90,15 +94,7 @@ function createTray() {
   } else {
     iconFile = "icon.png";
   }
-  if (dev) {
-    // icon path while developing
-    iconPath = "build/" + iconFile;
-  } else {
-    // this is the path after building the app
-    const installPath = path.dirname(app.getPath("exe"));
-    log.debug("installPath: " + installPath);
-    iconPath = path.join(installPath, "build", iconFile);
-  }
+  iconPath = path.join(iconDir, iconFile);
   log.debug("Tray icon path: " + iconPath);
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
@@ -114,7 +110,10 @@ function createTray() {
     },
     {
       label: 'Close', click: function () {
-        if (process.platform !== 'darwin') {
+        if (process.platform === 'darwin') {
+          log.info('WLED-GUI closed');
+          win.close();
+        } else {
           log.info('WLED-GUI quitted');
           app.quit()
         }
@@ -129,8 +128,9 @@ function createTray() {
   });
 }
 
+// read settings from localstorage
 function loadSettings() {
-  // read settings form localstorage
+  log.debug("Load settings from localstorage");
   win.webContents.executeJavaScript('localStorage.getItem("settings");').then(result => {
     settings = JSON.parse(result);
     log.debug("Settings:");
@@ -166,6 +166,21 @@ function checkTray() {
   }
 }
 
+function getIconDir() {
+  const installPath = path.dirname(app.getPath("exe"));
+  log.debug("installPath: " + installPath);
+  let dir;
+  if (dev) {
+    dir = "build/";
+  } else if (process.platform === 'darwin') {
+    dir = path.join(installPath, "../", "build");
+  }
+  else {
+    dir = path.join(installPath, "build");
+  }
+  return dir;
+}
+
 // check if second instance was started
 if (!gotTheLock) {
   log.info('WLED-GUI quitted');
@@ -188,9 +203,13 @@ if (!gotTheLock) {
   // for applications and their menu bar to stay active until the user quits
   // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    win.webContents.executeJavaScript('localStorage.removeItem("updateReminder");');
+    tray.destroy();
+    if (process.platform === 'darwin') {
+      log.info('WLED-GUI closed');
+    } else {
       log.info('WLED-GUI quitted');
-      app.quit()
+      app.quit();
     }
   })
 
