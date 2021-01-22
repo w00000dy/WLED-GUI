@@ -110,7 +110,10 @@ function createTray() {
     },
     {
       label: 'Close', click: function () {
-        if (process.platform !== 'darwin') {
+        if (process.platform === 'darwin') {
+          log.info('WLED-GUI closed');
+          win.close();
+        } else {
           log.info('WLED-GUI quitted');
           app.quit()
         }
@@ -200,10 +203,13 @@ if (!gotTheLock) {
   // for applications and their menu bar to stay active until the user quits
   // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
+    win.webContents.executeJavaScript('localStorage.removeItem("updateReminder");');
     tray.destroy();
-    if (process.platform !== 'darwin') {
+    if (process.platform === 'darwin') {
+      log.info('WLED-GUI closed');
+    } else {
       log.info('WLED-GUI quitted');
-      app.quit()
+      app.quit();
     }
   })
 
