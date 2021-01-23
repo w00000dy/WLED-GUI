@@ -32,6 +32,7 @@ log.debug("iconDir: " + iconDir);
 var win;
 var tray;
 var settings;
+var closedByTray = false;
 
 // Create the browser window.
 function createWindow() {
@@ -57,6 +58,16 @@ function createWindow() {
 
   // Open the DevTools.
   // win.webContents.openDevTools()
+
+  // show update reminder on next start
+  win.on('close', () => {
+    log.debug("win close event");
+    if (!closedByTray) {
+      win.webContents.executeJavaScript('localStorage.removeItem("updateReminder");').then(function () {
+        log.debug("localStorage updateReminder removed");
+      })
+    }
+  })
 
   // check if app was autostarted
   if (autostarted) {
@@ -110,13 +121,11 @@ function createTray() {
     },
     {
       label: 'Close', click: function () {
-        if (process.platform === 'darwin') {
-          log.info('WLED-GUI closed');
+        win.webContents.executeJavaScript('localStorage.removeItem("updateReminder");').then(function () {
+          log.debug("localStorage updateReminder removed");
+          closedByTray = true;
           win.close();
-        } else {
-          log.info('WLED-GUI quitted');
-          app.quit()
-        }
+        })
       }
     },
   ])
@@ -203,7 +212,6 @@ if (!gotTheLock) {
   // for applications and their menu bar to stay active until the user quits
   // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
-    win.webContents.executeJavaScript('localStorage.removeItem("updateReminder");');
     tray.destroy();
     if (process.platform === 'darwin') {
       log.info('WLED-GUI closed');
