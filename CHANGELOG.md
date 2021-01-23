@@ -10,6 +10,8 @@
 - added log file
 - added option to turn on lights automatically only at autostart
 - fixed #6
+- update reminder will appear only once when App is starting
+- updated to electron version 11.2.0
 
 ## WLED-GUI version 0.6.0
 - added an update notifier

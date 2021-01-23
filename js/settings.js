@@ -22,6 +22,7 @@ function openWiki() {
 
 // enabels or disables the autostart of wled-gui
 function toggleAutostart() {
+    log.debug("toggleAutostart(): enabels or disables the autostart of wled-gui");
     const AutoLaunch = require('auto-launch');
 
     let wledAutoLauncher = new AutoLaunch({

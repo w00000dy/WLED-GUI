@@ -20,4 +20,5 @@ You can download the latest version [here](https://github.com/WoodyLetsCode/WLED
 - [bonjour](https://www.npmjs.com/package/bonjour)
 - [Electron](https://www.electronjs.org/)
 - [electron-builder](https://github.com/electron-userland/electron-builder)
+- [electron-log](https://www.npmjs.com/package/electron-log)
 - [NodeJS](https://nodejs.org/)
