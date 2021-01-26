@@ -212,8 +212,12 @@ if (!gotTheLock) {
   // for applications and their menu bar to stay active until the user quits
   // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
-    tray.destroy();
     if (process.platform === 'darwin') {
+      if (settings !== null) {
+        if (settings[1].value) {
+          tray.destroy();
+        }
+      }
       log.info('WLED-GUI closed');
     } else {
       log.info('WLED-GUI quitted');
