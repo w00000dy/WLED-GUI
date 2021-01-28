@@ -17,6 +17,8 @@ You can download the latest version [here](https://github.com/WoodyLetsCode/WLED
 
 Need help with installation? Here is a [guide](https://github.com/WoodyLetsCode/WLED-GUI/wiki) that will help you.
 
+Alternatively you can build the app by yourself. You can find a guide for this [here](https://github.com/WoodyLetsCode/WLED-GUI/wiki/How-to-build-from-source).
+
 ## ✌️ Credits
 - [auto-launch](https://www.npmjs.com/package/auto-launch)
 - [bonjour](https://www.npmjs.com/package/bonjour)
