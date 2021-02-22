@@ -32,7 +32,6 @@ log.debug("iconDir: " + iconDir);
 var win;
 var tray;
 var settings;
-var closedByTray = false;
 
 // Create the browser window.
 function createWindow() {
@@ -58,16 +57,6 @@ function createWindow() {
 
   // Open the DevTools.
   // win.webContents.openDevTools()
-
-  // show update reminder on next start
-  win.on('close', () => {
-    log.debug("win close event");
-    if (!closedByTray) {
-      win.webContents.executeJavaScript('localStorage.removeItem("updateReminder");').then(function () {
-        log.debug("localStorage updateReminder removed");
-      })
-    }
-  })
 
   // check if app was autostarted
   if (autostarted) {
@@ -121,11 +110,7 @@ function createTray() {
     },
     {
       label: 'Close', click: function () {
-        win.webContents.executeJavaScript('localStorage.removeItem("updateReminder");').then(function () {
-          log.debug("localStorage updateReminder removed");
-          closedByTray = true;
-          win.close();
-        })
+        win.close();
       }
     },
   ])

@@ -1,7 +1,7 @@
 // set version
 const wledGuiVersion = require('electron').remote.app.getVersion();
 
-if (localStorage.getItem("updateReminder") === null) {
+if (sessionStorage.getItem("updateReminder") === null) {
     if (localStorage.getItem("remindLaterTime") === null || (Date.now() - localStorage.getItem("remindLaterTime")) >= 259200000) {  // 3 days
         checkForUpdate();
     }
@@ -17,7 +17,7 @@ function checkForUpdate() {
             let instance = M.Modal.getInstance(document.getElementById("updatePopup"));
             document.getElementById("updatePopupText").innerText = "A new update for WLED-GUI is available.\n\nYour version: " + wledGuiVersion + "\nLatest version: " + xhr.response;
             instance.open();
-            localStorage.setItem("updateReminder", "true");
+            sessionStorage.setItem("updateReminder", "true");
         }
     };
 
