@@ -1,5 +1,8 @@
 # WLED-GUI changelog
 
+## WLED-GUI version 0.7.1
+- optimized update notification
+
 ## WLED-GUI version 0.7.0
 - added settings page
 - added autostart option
