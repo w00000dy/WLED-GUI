@@ -11,7 +11,7 @@ This is a cross-platform desktop app for [WLED](https://github.com/Aircoookie/WL
 - Automatically turn on lights at system startup ✅
 
 ## 🖼️ Images
-<img src="/images/macbook-pro-space-gray-on-the-wooden-table.jpg" width="50%"><img src="/images/bright-office-enviroment-with-macbook-air.jpg" width="50%">
+<a href="https://ibb.co/R2QF02d"><img src="https://i.ibb.co/6YDMPYL/macbook-pro-space-gray-on-the-wooden-table.jpg" alt="macbook pro space gray on the wooden table with wled"  width="50%"></a><a href="https://ibb.co/g7Ypq7R"><img src="https://i.ibb.co/TTySjTg/bright-office-enviroment-with-macbook-air.jpg" alt="bright office enviroment with macbook air and wled"  width="50%"></a>
  
 ## ⬇️ Download
 You can download the latest version [here](https://github.com/WoodyLetsCode/WLED-GUI/releases/latest).
