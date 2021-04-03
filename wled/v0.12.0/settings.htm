@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>WLED Settings</title>
+	<style>
+		body {
+			text-align: center;
+			background: #222;
+			height: 100px;
+			margin: 0;
+		}
+
+		html {
+			--h: 11.55vh;
+		}
+
+		button {
+			background: #333;
+			color: #fff;
+			font-family: Verdana, Helvetica, sans-serif;
+			border: 0.3ch solid #333;
+			display: inline-block;
+			font-size: 8vmin;
+			height: var(--h);
+			width: 95%;
+			margin-top: 2.4vh;
+		}
+	</style>
+</head>
+
+<body>
+	<form action="index.htm"><button type=submit id="b">Back</button></form>
+	<!-- <form action="/settings/wifi"><button type="submit">WiFi Setup</button></form>
+<form action="/settings/leds"><button type="submit">LED Preferences</button></form> -->
+	<form action="settings_ui.htm"><button type="submit">User Interface</button></form>
+	<!-- <form action="/settings/sync"><button type="submit">Sync Interfaces</button></form>
+<form action="/settings/time"><button type="submit">Time & Macros</button></form>
+<form action="/settings/sec"><button type="submit">Security & Updates</button></form> -->
+	<form onclick="openSettings()"><button>More settings...</button></form>
+
+	<script>
+		// Open settings
+		function openSettings() {
+			let ip = localStorage.getItem("locIp");
+			const { shell } = parent.require('electron')
+			shell.openExternal('http:/' + ip + '/settings')
+		}
+	</script>
+
+</body>
+
+</html>

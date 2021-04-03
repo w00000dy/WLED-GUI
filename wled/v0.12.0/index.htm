@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+	<meta charset="utf-8">
+	<meta name="theme-color" content="#222222">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAGACGAAAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgGAAAAH/P/YQAAAE1JREFUOI1j/P//PwOxgNGeAUMxE9G6cQCKDWAhpADZ2f8PMjBS3QW08QK20KaZC2gfC9hCnqouoNgARgY7zMxAyNlUdQHlXiAlO2MDAD63EVqNHAe0AAAAAElFTkSuQmCC"/>
+	<title>WLED</title>
+	<script>function feedback(){}</script>
+	<link rel="stylesheet" href="index.css">
+</head>
+<body onload="onLoad()">
+
+<div id="cv" class="overlay">Loading WLED UI...</div>
+<noscript><div class="overlay" style="opacity:1;">Sorry, WLED UI needs JavaScript!</div></noscript>
+<div id="bg"></div>
+
+<div class="wrapper" id="top">
+	<div class="tab top">
+		<div class="btnwrap">
+			<button id="buttonPower" onclick="togglePower()" class="tgl"><i class="icons">&#xe08f;</i><p class="tab-label">Power</p></button>
+			<button id="buttonNl" onclick="toggleNl()"><i class="icons">&#xe2a2;</i><p class="tab-label">Timer</p></button>
+			<button id="buttonSync" onclick="toggleSync()"><i class="icons">&#xe116;</i><p class="tab-label">Sync</p></button>
+			<button id="buttonSr" onclick="toggleLiveview()"><i class="icons">&#xe410;</i><p class="tab-label">Peek</p></button>
+		  <button id="buttonI" onclick="toggleInfo()"><i class="icons">&#xe066;</i><p class="tab-label">Info</p></button>
+      <button id="buttonNodes" onclick="toggleNodes()"><i class="icons">&#xe22d;</i><p class="tab-label">Nodes</p></button></div>
+			<button onclick="window.location.href = 'settings.htm';"><i class="icons">&#xe0a2;</i><p class="tab-label">Config</p></button>
+		  <button id="buttonPcm" onclick="togglePcMode(true)"><i class="icons">&#xe23d;</i><p class="tab-label">PC Mode</p></button>
+		</div>
+		<div id="briwrap">
+			<p class="hd">Brightness</p>
+			<div class="il">
+				<i class="icons slider-icon" onclick="tglTheme()">&#xe2a6;</i>
+				<div class="sliderwrap il">
+					<input id="sliderBri" onchange="setBri()" oninput="updateTrail(this)" max="255" min="1" type="range" value="128" />
+					<div class="sliderdisplay"></div>
+				</div>
+			</div>
+		</div>
+		<iframe id="liveview" src="about:blank"></iframe>
+	</div>
+</div>
+
+<div class ="container">
+	<div id="Colors" class="tabcontent">
+		<div id="picker" class="noslide"></div>
+		<div id="rgbwrap">
+			<div class="sliderwrap il">
+				<input id="sliderR" class="noslide" onchange="fromRgb()" oninput="updateTrail(this,1)" max="255" min="0" type="range" value="128" />
+				<div class="sliderdisplay"></div>
+			</div><br>
+			<div class="sliderwrap il">
+				<input id="sliderG" class="noslide" onchange="fromRgb()" oninput="updateTrail(this,2)" max="255" min="0" type="range" value="128" />
+				<div class="sliderdisplay"></div>
+			</div><br>
+			<div class="sliderwrap il">
+				<input id="sliderB" class="noslide" onchange="fromRgb()" oninput="updateTrail(this,3)" max="255" min="0" type="range" value="128" />
+				<div class="sliderdisplay"></div>
+			</div><br>
+		</div>
+		<div id="wwrap">
+			<p class="labels">White channel</p>
+			<div class="sliderwrap il">
+				<input id="sliderW" class="noslide" onchange="setColor(0)" oninput="updateTrail(this)" max="255" min="0" type="range" value="128" />
+				<div class="sliderdisplay"></div>
+			</div>
+		</div>
+		<div id="qcs-w">
+			<div class="qcs" onclick="pC('#ff0000');" title="Red" style="background-color:#ff0000;"></div>
+			<div class="qcs" onclick="pC('#ffa000');" title="Orange" style="background-color:#ffa000;"></div>
+			<div class="qcs" onclick="pC('#ffc800');" title="Yellow" style="background-color:#ffc800;"></div>
+			<div class="qcs" onclick="pC('#ffe0a0');" title="Warm White" style="background-color:#ffe0a0;"></div>
+			<div class="qcs" onclick="pC('#ffffff');" title="White" style="background-color:#ffffff;"></div>
+			<div class="qcs qcsb" onclick="pC('#000000');" title="Black" style="background-color:#000000;"></div><br>
+			<div class="qcs" onclick="pC('#ff00ff');" title="Pink" style="background-color:#ff00ff;"></div>
+			<div class="qcs" onclick="pC('#0000ff');" title="Blue" style="background-color:#0000ff;"></div>
+			<div class="qcs" onclick="pC('#00ffc8');" title="Cyan" style="background-color:#00ffc8;"></div>
+			<div class="qcs" onclick="pC('#08ff00');" title="Green" style="background-color:#08ff00;"></div>
+			<div class="qcs" onclick="pC('rnd');" title="Random" style="background-color:var(--c-3); padding: 4px 8px; transform: translateY(-10px);">R</div>
+		</div>
+		<div id="csl">
+			<button class="xxs cl btn" onclick="selectSlot(0);">1</button>
+			<button class="xxs cl btn" onclick="selectSlot(1);">2</button>
+			<button class="xxs cl btn" onclick="selectSlot(2);">3</button>
+		</div>
+		<div id="hexw">
+			<input id="hexc" type="text" class="noslide" onkeydown="hexEnter(this)" autocomplete="off" maxlength="8" />
+			<button id="hexcnf" class="xxs btn" onclick="fromHex();"><i class="icons btna-icon">&#xe390;</i></button>
+		</div>
+		<p class="labels">
+			<i class="icons sel-icon" onclick="tglHex()">&#xe2b3;</i>
+			Color palette
+		</p>
+		<div class="il">
+			<div id="selectPalette" class="list">
+				<div class="lstI" data-id="0">
+					<label class="check schkl">
+						&nbsp;
+						<input type="radio" value="${palettes[i].id}" name="palette" onChange="setPalette()">
+						<span class="checkmark schk"></span>
+					</label>
+					<div class="lstIcontent">
+						<span class="lstIname">
+							Default
+						</span>
+					</div>
+				</div>
+				<div class="lstI">
+					<div class="lstIcontent">
+						<span class="lstIname">
+							Loading...
+						</span>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div id="Effects" class="tabcontent">
+		<p class="labels">Effect speed</p>
+		<div class="staytop">
+			<i class="icons slider-icon">&#xe325;</i>
+			<div class="sliderwrap il">
+				<input id="sliderSpeed" class="noslide" onchange="setSpeed()" oninput="updateTrail(this)" max="255" min="0" type="range" value="128" />
+				<output class="sliderbubble hidden"></output>
+				<div class="sliderdisplay"></div>
+			</div>
+		</div>
+		<p class="labels">Effect intensity</p>
+		<div class="staytop" id="staytop1">
+			<i class="icons slider-icon" onclick="tglLabels()">&#xe409;</i>
+			<div class="sliderwrap il">
+				<input id="sliderIntensity" class="noslide" onchange="setIntensity()" oninput="updateTrail(this)" max="255" min="0" type="range" value="128" />
+				<output class="sliderbubble hidden"></output>
+				<div class="sliderdisplay"></div>
+			</div>
+		</div>
+		<p class="labels">Effect mode</p>
+		<div id="fxlist" class="list">
+			Loading...
+		</div>
+	</div>
+
+	<div id="Segments" class="tabcontent">
+		<div id="segcont">
+			Loading...
+		</div>
+		<div id="segutil">
+
+		</div>
+		<div id="segutil2">
+			<button class="btn btn-s" id="rsbtn" onclick="rSegs()">Reset segments</button>
+		</div>
+	</div>
+
+	<div id="Favorites" class="tabcontent">
+		<div id="putil">
+
+		</div>
+		<div id="pql">
+
+		</div>
+		<div id="pcont">
+			Loading...
+		</div><br>
+		 <label class="check psvl">
+			Preset cycle
+			<input type="checkbox" id="cyToggle" onchange="toggleCY()">
+			<span class="checkmark psv"></span>
+		</label><br>
+		First preset: <input id="cycs" class="noslide" type="number" min="1" max="249" value="1"><br>
+		Last preset: <input id="cyce" class="noslide" type="number" min="2" max="250" value="3"><br>
+		Time per preset: <input id="cyct" class="noslide" type="number" min="0.2" max="6553.5" step="0.1" value="1.2">s<br>
+		Transition: <input id="cyctt" class="noslide" type="number" min="0" max="65.5" step="0.1" value="0.7">s
+	</div>
+</div>
+
+<div class="tab bot" id="bot">
+	<button class="tablinks" onclick="openTab(0)"><i class="icons">&#xe2b3;</i><p class="tab-label">Colors</p></button>
+	<button class="tablinks" onclick="openTab(1)"><i class="icons">&#xe23d;</i><p class="tab-label">Effects</p></button>
+	<button class="tablinks" onclick="openTab(2)"><i class="icons">&#xe34b;</i><p class="tab-label">Segments</p></button>
+	<button class="tablinks" onclick="openTab(3)"><i class="icons">&#xe04c;</i><p class="tab-label">Favorites</p></button>
+</div>
+
+<div id="connind"></div>
+<div id="toast"></div>
+<div id="namelabel" onclick="toggleNodes()"></div>
+<div id="info" class="modal">
+	<div id="imgw">
+		<img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAggAAACMCAYAAAAZQlGEAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKLSURBVHhe7dgxjtwwEADBpf//5zUDwklnpzFAnKoSTigNFTT0AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGDcOieX+G5nvNLaznil6f1Nv+/tz3c7+3tmen/Tpu/jbe877c85AQD+EQgAQAgEACAEAgAQAgEACIEAAIRAAABCIAAAIRAAgBAIAEAIBAAgBAIAEAIBAAiBAACEQAAAQiAAACEQAIAQCABACAQAINY5+aHvdsYRazvjK9jfM7fvz/0+Y3+/2+336w8CABACAQAIgQAAhEAAAEIgAAAhEACAEAgAQAgEACAEAgAQAgEACIEAAIRAAABCIAAAIRAAgBAIAEAIBAAgBAIAEAIBAAiBAADEOudrfLczXmltZ3yF6fuwv2em9+d+n5ne3zT3cZfp+/AHAQAIgQAAhEAAAEIgAAAhEACAEAgAQAgEACAEAgAQAgEACIEAAIRAAABCIAAAIRAAgBAIAEAIBAAgBAIAEAIBAAiBAACEQAAAYp3zNb7bGUes7Yz8wO334fmeuf35bmd/z9y+v9ufzx8EACAEAgAQAgEACIEAAIRAAABCIAAAIRAAgBAIAEAIBAAgBAIAEAIBAAiBAACEQAAAQiAAACEQAIAQCABACAQAIAQCABACAQCIdc4x3+2MV1rbGfmFpr+/6e/l9ue73fT+pt1+H2/bn+/lGX8QAIAQCABACAQAIAQCABACAQAIgQAAhEAAAEIgAAAhEACAEAgAQAgEACAEAgAQAgEACIEAAIRAAABCIAAAIRAAgBAIAEAIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgP/u8/kLYCqAxINTyZkAAAAASUVORK5CYII=">
+	</div><br>
+<div id="kv">Loading...</div><br>
+<button class="btn infobtn" onclick="requestJson(null)">Refresh</button>
+<button class="btn infobtn" onclick="toggleInfo()">Close Info</button><br>
+<button class="btn infobtn" onclick="toggleNodes()">Instance List</button>
+<button class="btn infobtn" id="resetbtn" onclick="cnfReset()">Reboot WLED</button><br>
+<span class="h">Made with <span id="heart">&#10084;&#xFE0E;</span> by Aircoookie and the WLED community</span>
+</div>
+
+<div id="nodes" class="modal">
+  <div id="ndlt">WLED instances</div>
+  <div id="kn">Loading...</div><br>
+  <button class="btn infobtn" onclick="loadNodes()">Refresh</button>
+  <button class="btn infobtn" onclick="toggleNodes()">Close list</button><br>
+</div>
+
+<div id="rover" class="modal">
+	<i class="icons huge">&#xe410;</i><br>
+	<div id="lv">?</div><br><br>
+	To use built-in effects, use an override button below.<br>
+	You can return to realtime mode by pressing the star in the top left corner.<br>
+	<button class="btn" onclick="setLor(1)">Override once</button>
+	<button class="btn" onclick="setLor(2)">Override until reboot</button><br>
+	<span class="h">For best performance, it is recommended to turn off the streaming source when not in use.</span>
+</div>
+
+<i id="roverstar" class="icons huge" onclick="setLor(0)">&#xe410;</i><br>
+<script src="iro.js"></script>
+<script src="rangetouch.js"></script>
+<script src="index.js"></script>
+</body>
+</html>

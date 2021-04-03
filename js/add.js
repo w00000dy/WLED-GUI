@@ -174,7 +174,8 @@ function addLight(name, ip) {
         online: true,
         on: false,
         version: "unknown",
-        autostart: false
+        autostart: false,
+        onlineMode: false
     };
     let lights = JSON.parse(localStorage.getItem("lights"));
     log.verbose("Add light and save to local storage");

@@ -2,6 +2,11 @@
 
 ## WLED-GUI version 0.7.1
 - optimized update notification
+- added online mode
+- updated for WLED version 0.12.0
+- updated to electron version 12.0.2
+- updated to electron-builder version 22.10.5
+- updated to electron-log version 4.3.2
 
 ## WLED-GUI version 0.7.0
 - added settings page

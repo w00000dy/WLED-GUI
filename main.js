@@ -76,7 +76,8 @@ function createWorker() {
   const workerWindow = new BrowserWindow({
     show: false,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   });
   // and load the autostart.html
@@ -110,6 +111,7 @@ function createTray() {
     },
     {
       label: 'Close', click: function () {
+        log.debug("Close window via tray");
         win.close();
       }
     },
@@ -197,6 +199,7 @@ if (!gotTheLock) {
   // for applications and their menu bar to stay active until the user quits
   // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
+    log.debug("All windows are closed");
     if (process.platform === 'darwin') {
       if (settings !== null) {
         if (settings[1].value) {
