@@ -7,6 +7,7 @@
 - updated to electron version 12.0.2
 - updated to electron-builder version 22.10.5
 - updated to electron-log version 4.3.2
+- fixed bug that all logs are collected in Renderer process
 
 ## WLED-GUI version 0.7.0
 - added settings page
