@@ -21,6 +21,7 @@ Need help with installation? Here is a [guide](https://github.com/WoodyLetsCode/
 Alternatively you can build the app by yourself. You can find a guide for this [here](https://github.com/WoodyLetsCode/WLED-GUI/wiki/How-to-build-from-source).
 
 ## ✌️ Credits
+- [Akemi](https://github.com/Aircoookie/Akemi)
 - [auto-launch](https://www.npmjs.com/package/auto-launch)
 - [bonjour](https://www.npmjs.com/package/bonjour)
 - [Electron](https://www.electronjs.org/)
