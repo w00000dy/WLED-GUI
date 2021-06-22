@@ -1,6 +1,6 @@
 const log = require('electron-log');
-log.transports.console.level = "info";
-log.transports.file.level = "info";
+log.transports.console.level = "debug";
+log.transports.file.level = "debug";
 log.catchErrors();
 
 document.getElementById("logo").addEventListener("click", openRepositorie);
