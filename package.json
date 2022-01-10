@@ -58,12 +58,12 @@
     ]
   },
   "devDependencies": {
-    "electron": "^12.0.12",
-    "electron-builder": "^22.11.7"
+    "electron": "^12.2.3",
+    "electron-builder": "^22.14.5"
   },
   "dependencies": {
     "auto-launch": "^5.0.5",
     "bonjour": "^3.5.0",
-    "electron-log": "^4.3.5"
+    "electron-log": "^4.4.4"
   }
 }
