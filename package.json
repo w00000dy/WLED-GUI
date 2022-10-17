@@ -5,7 +5,7 @@
     "name": "Woody",
     "email": "27882680+WoodyLetsCode@users.noreply.github.com"
   },
-  "version": "0.7.1",
+  "version": "0.7.2",
   "homepage": "https://github.com/WoodyLetsCode/WLED-GUI",
   "bugs": {
     "url": "https://github.com/WoodyLetsCode/WLED-GUI/issues"
@@ -58,12 +58,13 @@
     ]
   },
   "devDependencies": {
-    "electron": "^12.2.3",
-    "electron-builder": "^22.14.5"
+    "electron": "^21.1.1",
+    "electron-builder": "^23.6.0"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "auto-launch": "^5.0.5",
     "bonjour": "^3.5.0",
-    "electron-log": "^4.4.4"
+    "electron-log": "^4.4.6"
   }
 }

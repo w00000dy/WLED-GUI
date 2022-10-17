@@ -1,4 +1,4 @@
-const supportedVersions = ["0.10.0", "0.10.2", "0.11.0", "0.11.1", "0.12.0"]
+const supportedVersions = ["0.10.0", "0.10.2", "0.11.0", "0.11.1", "0.12.0", "0.13.3"]
 const locIp = localStorage.getItem("locIp");
 const locVersion = localStorage.getItem("locVersion");
 const onlineMode = localStorage.getItem("onlineMode");

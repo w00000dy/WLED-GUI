@@ -9,8 +9,8 @@ if (localStorage.getItem("settings") === null) {
     saveSettings();
 }
 
-checkAutostart();
 loadSettings();
+enableAutostart();
 loadLights();
 
 // Opens Github settings wiki page in default browser
@@ -56,6 +56,35 @@ function toggleAutostart() {
     }
     document.getElementById("autostartHidden").disabled = !document.getElementById("autostart").checked;
     saveSettings();
+}
+
+// enables the autostart button
+function enableAutostart() {
+    if (process.platform == "win32" || process.platform == "linux") {
+        log.verbose("Enable autostart because OS is win32 or linux");
+        document.getElementById("autostart").disabled = false;
+        checkAutostart();
+    } else {
+        checkAutostart();
+
+        const AutoLaunch = require('auto-launch');
+        let wledAutoLauncher = new AutoLaunch({
+            name: 'WLED'
+        });
+        let promise = wledAutoLauncher.isEnabled();
+        promise.then(function (value) {
+            if (value) {
+                log.verbose("Disable autostart because OS is not win32 or linux");
+                wledAutoLauncher.disable();
+                document.getElementById("autostart").checked = false;
+            }
+        }
+        );
+
+        log.debug("Disable autostart and autostartHidden button");
+        document.getElementById("autostartHidden").checked = false;
+        saveSettings();
+    }
 }
 
 // enabels or disables the tray icon of wled-gui

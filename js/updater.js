@@ -1,5 +1,6 @@
 // set version
-const wledGuiVersion = require('electron').remote.app.getVersion();
+const wledGuiVersion = "0.7.2";
+log.debug("Current WLED-GUI Version: " + wledGuiVersion);
 
 if (sessionStorage.getItem("updateReminder") === null) {
     if (localStorage.getItem("remindLaterTime") === null || (Date.now() - localStorage.getItem("remindLaterTime")) >= 259200000) {  // 3 days
