@@ -32,6 +32,7 @@
     "build mac": "electron-builder --mac --publish=never"
   },
   "build": {
+    "appId": "wled-gui.woody.pizza",
     "productName": "WLED",
     "artifactName": "${productName}-${version}-${os}.${ext}",
     "nsis": {
