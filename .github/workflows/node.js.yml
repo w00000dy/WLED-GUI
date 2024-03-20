@@ -12,8 +12,16 @@ jobs:
         include:
           - os: ubuntu-latest
             build-command: 'npm run "build linux"'
+          - os: ubuntu-latest
+            build-command: 'npm run "build linux deb"'
+          - os: ubuntu-latest
+            build-command: 'npm run "build linux freebsd"'
+          - os: ubuntu-latest
+            build-command: 'npm run "build linux rpm"'
           - os: windows-latest
             build-command: 'npm run "build windows"'
+          - os: windows-latest
+            build-command: 'npm run "build windows msi"'
           - os: macos-latest
             build-command: 'npm run "build mac"'
             
@@ -30,4 +38,11 @@ jobs:
       with:
         name: firmware-${{ matrix.os }}
         path: |
-          dist/WLED-*
+          dist/WLED-*.AppImage
+          dist/WLED-*.deb
+          dist/WLED-*.rpm
+          dist/WLED-*.snap
+          dist/WLED-*.dmg
+          dist/WLED-*.msi
+          dist/WLED-*.exe
+          
