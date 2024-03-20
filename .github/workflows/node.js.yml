@@ -12,18 +12,25 @@ jobs:
         include:
           - os: ubuntu-latest
             build-command: 'npm run "build linux"'
+            output: 'AppImage & snap'
           - os: ubuntu-latest
             build-command: 'npm run "build linux deb"'
+            output: 'deb'
           - os: ubuntu-latest
             build-command: 'npm run "build linux freebsd"'
+            output: 'freebsd'
           - os: ubuntu-latest
             build-command: 'npm run "build linux rpm"'
+            output: 'rpm'
           - os: windows-latest
             build-command: 'npm run "build windows"'
+            output: 'exe'
           - os: windows-latest
             build-command: 'npm run "build windows msi"'
+            output: 'msi'
           - os: macos-latest
             build-command: 'npm run "build mac"'
+            output: 'dmg'
             
     steps:
     - uses: actions/checkout@v4
@@ -36,7 +43,7 @@ jobs:
       run: ${{ matrix.build-command }}
     - uses: actions/upload-artifact@v4
       with:
-        name: WLED-${{ matrix.os }}
+        name: WLED-${{ matrix.os }}-${{ matrix.output }}
         path: |
           dist/WLED-*.AppImage
           dist/WLED-*.deb
