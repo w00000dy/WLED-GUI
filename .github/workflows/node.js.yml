@@ -1,10 +1,6 @@
 name: Node.js CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -20,12 +16,13 @@ jobs:
             build-command: 'npm run "build windows"'
           - os: macos-latest
             build-command: 'npm run "build mac"'
+            
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        cache: 'npm'
     - run: npm ci
     - name: Build
-      run: ${{ matrix.command }}
+      run: ${{ matrix.build-command }}
