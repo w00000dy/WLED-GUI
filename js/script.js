@@ -159,5 +159,5 @@ function remindLater() {
 
 function sync() {
     getStatus();
-    setTimeout(sync, 1000);
+    setTimeout(sync, 10000);
 }
