@@ -36,7 +36,7 @@ jobs:
       run: ${{ matrix.build-command }}
     - uses: actions/upload-artifact@v4
       with:
-        name: firmware-${{ matrix.os }}
+        name: WLED-${{ matrix.os }}
         path: |
           dist/WLED-*.AppImage
           dist/WLED-*.deb
