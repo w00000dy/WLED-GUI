@@ -41,7 +41,7 @@ function openRepositorie() {
 // Opens the latest release of WLED-GUI in default browser
 function openRelease() {
     const { shell } = require('electron')
-    shell.openExternal('https://github.com/WoodyLetsCode/WLED-GUI/releases/latest')
+    shell.openExternal('https://github.com/w00000dy/WLED-GUI/releases/latest')
 }
 
 // Shows all Lighs in main page

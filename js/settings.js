@@ -17,7 +17,7 @@ loadLights();
 function openWiki() {
     log.verbose("Opens Github settings wiki page in default browser");
     const { shell } = require('electron')
-    shell.openExternal('https://github.com/WoodyLetsCode/WLED-GUI/wiki/Settings')
+    shell.openExternal('https://github.com/w00000dy/WLED-GUI/wiki/Settings')
 }
 
 // enabels or disables the autostart of wled-gui

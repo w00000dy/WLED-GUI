@@ -3,16 +3,16 @@
   "description": "A cross-platform desktop app for WLED",
   "author": {
     "name": "Woody",
-    "email": "27882680+WoodyLetsCode@users.noreply.github.com"
+    "email": "support@woody.pizza"
   },
   "version": "0.7.2",
-  "homepage": "https://github.com/WoodyLetsCode/WLED-GUI",
+  "homepage": "https://github.com/w00000dy/WLED-GUI",
   "bugs": {
-    "url": "https://github.com/WoodyLetsCode/WLED-GUI/issues"
+    "url": "https://github.com/w00000dy/WLED-GUI/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/WoodyLetsCode/WLED-GUI.git"
+    "url": "https://github.com/w00000dy/WLED-GUI.git"
   },
   "main": "main.js",
   "scripts": {

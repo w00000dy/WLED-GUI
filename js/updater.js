@@ -11,7 +11,7 @@ if (sessionStorage.getItem("updateReminder") === null) {
 // checks if a update is available
 function checkForUpdate() {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://raw.githubusercontent.com/WoodyLetsCode/WLED-GUI/master/VERSION', true);
+    xhr.open('GET', 'https://raw.githubusercontent.com/w00000dy/WLED-GUI/master/VERSION', true);
     xhr.onload = function () {
         if (xhr.response !== wledGuiVersion) {
             log.info("New update avaiable!");
