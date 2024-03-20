@@ -126,7 +126,6 @@ function loadLights() {
         const element = lights[index];
         log.debug("Add light " + element.name + " to list");
         document.getElementById("autoTurnOn").innerHTML += "<li class=\"collection-item\"><div>" + element.name + "<a class=\"secondary-content\"><div class=\"switch\"><label>Off<input type=\"checkbox\" id=\"lightAutostart" + index + "\" onchange=\"addLightToAutostart(" + index + ", this.checked)\"><span class=\"lever\"></span>On</label></div></a></div></li>";
-        document.getElementById("onlineMode").innerHTML += "<li class=\"collection-item\"><div>" + element.name + "<a class=\"secondary-content\"><div class=\"switch\"><label>Off<input type=\"checkbox\" id=\"lightOnlineMode" + index + "\" onchange=\"addLightToOnlineMode(" + index + ", this.checked)\"><span class=\"lever\"></span>On</label></div></a></div></li>";
     }
     checkLightOptions(lights);
 }
@@ -136,12 +135,9 @@ function checkLightOptions(lights) {
     log.verbose("check if autostart is already enabeld for a light");
     for (let index = 0; index < lights.length; index++) {
         let autostart = lights[index].autostart;
-        let onlineMode = lights[index].onlineMode;
         log.debug("Autostart is " + autostart + " for light " + lights[index].name);
         // autostart
         document.getElementById("lightAutostart" + index).checked = autostart;
-        // onlineMode
-        document.getElementById("lightOnlineMode" + index).checked = onlineMode;
     }
 }
 
@@ -149,13 +145,6 @@ function checkLightOptions(lights) {
 function addLightToAutostart(id, state) {
     let lights = JSON.parse(localStorage.getItem("lights"));
     lights[id].autostart = state;
-    localStorage.setItem("lights", JSON.stringify(lights));
-}
-
-// adds a light to online mode so it will automaticcaly turn on with program start
-function addLightToOnlineMode(id, state) {
-    let lights = JSON.parse(localStorage.getItem("lights"));
-    lights[id].onlineMode = state;
     localStorage.setItem("lights", JSON.stringify(lights));
 }
 

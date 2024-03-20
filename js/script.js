@@ -124,10 +124,8 @@ function goToWled(index) {
         var lights = JSON.parse(localStorage.getItem("lights"));
         var ip = lights[index].ip;
         var version = lights[index].version;
-        var onlineMode = lights[index].onlineMode;
         localStorage.setItem("locIp", ip);
         localStorage.setItem("locVersion", version);
-        localStorage.setItem("onlineMode", onlineMode);
         location.href = "wled-viewer.html";
     }
 }

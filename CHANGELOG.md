@@ -1,5 +1,9 @@
 # WLED-GUI changelog
 
+## WLED-GUI version 0.7.2
+- updated dependencies
+- removed online mode option, because we are now always using the online mode
+
 ## WLED-GUI version 0.7.1
 - optimized update notification
 - added online mode
