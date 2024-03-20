@@ -1,7 +1,4 @@
 const log = require('electron-log');
-log.transports.console.level = "info";
-log.transports.file.level = "info";
-log.catchErrors();
 
 //    This is used to turn on lights automatically at startup
 

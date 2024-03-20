@@ -2,6 +2,8 @@ const { app, BrowserWindow, Menu, Tray } = require('electron')
 const path = require('path')
 const log = require('electron-log');
 
+log.initialize();
+
 /* LOG LEVEL */
 // log.transports.console.level = "error";
 // log.transports.file.level = "error";
@@ -15,8 +17,6 @@ const log = require('electron-log');
  log.transports.file.level = "debug";
 // log.transports.console.level = "silly";
 // log.transports.file.level = "silly";
-
-log.catchErrors();
 
 log.info('WLED-GUI started');
 
