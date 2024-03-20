@@ -13,9 +13,13 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        command: ['npm build linux', 'npm build windows', 'npm build mac']
-
+        include:
+          - os: ubuntu-latest
+            build-command: 'npm run "build linux"'
+          - os: windows-latest
+            build-command: 'npm run "build windows"'
+          - os: macos-latest
+            build-command: 'npm run "build mac"'
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js
