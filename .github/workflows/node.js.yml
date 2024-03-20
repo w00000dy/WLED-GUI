@@ -30,6 +30,4 @@ jobs:
       with:
         name: firmware-${{ matrix.os }}
         path: |
-          dist/WLED-*.exe
-          dist/WLED-*.deb
-          dist/WLED-*.dmg
+          dist/WLED-*
