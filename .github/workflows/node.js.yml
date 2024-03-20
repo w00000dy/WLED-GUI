@@ -1,0 +1,35 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            build-command: 'npm run "build linux"'
+          - os: windows-latest
+            build-command: 'npm run "build windows"'
+          - os: macos-latest
+            build-command: 'npm run "build mac"'
+            
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        cache: 'npm'
+    - run: npm ci
+    - name: Build
+      run: ${{ matrix.build-command }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: firmware-${{ matrix.os }}
+        path: |
+          dist/WLED-*.exe
+          dist/WLED-*.deb
+          dist/WLED-*.dmg
