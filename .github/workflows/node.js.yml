@@ -49,6 +49,7 @@ jobs:
           dist/WLED-*.deb
           dist/WLED-*.rpm
           dist/WLED-*.snap
+          dist/WLED-*.freebsd
           dist/WLED-*.dmg
           dist/WLED-*.msi
           dist/WLED-*.exe
