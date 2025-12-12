@@ -17,7 +17,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron . --dev --no-sandbox",
-    "autostart": "electron . --hidden --dev",
+    "autostart": "electron . --hidden --dev --no-sandbox",
     "pack": "electron-builder --dir",
     "build": "electron-builder -mwl",
     "build windows": "electron-builder --windows --publish=never",
