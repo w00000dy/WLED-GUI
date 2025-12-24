@@ -14,10 +14,10 @@ const DeviceView = () => {
                 </Link>
                 <div className="text-white font-mono text-sm bg-gray-800 px-3 py-1 rounded-full">{ip}</div>
                 <button
-                    onClick={() => window.api?.shell?.openExternal(`http://${ip}`)}
+                    onClick={() => window.api?.window?.openDevice(`http://${ip}`)}
                     className="text-orange-500 hover:text-orange-400 flex items-center text-sm font-medium transition-colors cursor-pointer"
                 >
-                    Open in Browser
+                    Open Window
                     <ExternalLink size={16} className="ml-1" />
                 </button>
             </div>
