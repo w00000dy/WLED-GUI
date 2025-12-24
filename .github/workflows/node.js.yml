@@ -4,7 +4,6 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -31,26 +30,25 @@ jobs:
           - os: macos-latest
             build-command: 'npm run "build mac"'
             output: 'dmg'
-            
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        cache: 'npm'
-    - run: npm ci
-    - name: Build
-      run: ${{ matrix.build-command }}
-    - uses: actions/upload-artifact@v4
-      with:
-        name: WLED-${{ matrix.os }}-${{ matrix.output }}
-        path: |
-          dist/WLED-*.AppImage
-          dist/WLED-*.deb
-          dist/WLED-*.rpm
-          dist/WLED-*.snap
-          dist/WLED-*.freebsd
-          dist/WLED-*.dmg
-          dist/WLED-*.msi
-          dist/WLED-*.exe
-          
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+      - run: npm ci
+      - name: Build
+        run: ${{ matrix.build-command }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WLED-${{ matrix.os }}-${{ matrix.output }}
+          path: |
+            dist/WLED-*.AppImage
+            dist/WLED-*.deb
+            dist/WLED-*.rpm
+            dist/WLED-*.snap
+            dist/WLED-*.freebsd
+            dist/WLED-*.dmg
+            dist/WLED-*.msi
+            dist/WLED-*.exe

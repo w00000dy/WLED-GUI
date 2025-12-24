@@ -7,24 +7,23 @@ import AddDevice from './pages/AddDevice';
 import Settings from './pages/Settings';
 
 function App() {
-  
   // Log startup in React world just to confirm
   useEffect(() => {
-      console.log("WLED-GUI React App Started");
+    console.log('WLED-GUI React App Started');
   }, []);
 
   return (
     <Router>
-        <Layout>
-            <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/device/:ip" element={<DeviceView />} />
-                <Route path="/add" element={<AddDevice />} />
-                <Route path="/settings" element={<Settings />} />
-            </Routes>
-        </Layout>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/device/:ip" element={<DeviceView />} />
+          <Route path="/add" element={<AddDevice />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+      </Layout>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

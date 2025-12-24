@@ -13,46 +13,43 @@ const __dirname = path.dirname(__filename);
 log.initialize();
 
 /* LOG LEVEL */
-log.transports.console.level = "debug";
-log.transports.file.level = "debug";
+log.transports.console.level = 'debug';
+log.transports.file.level = 'debug';
 
 log.info('WLED-GUI started');
-log.debug("Start arguments:", process.argv);
+log.debug('Start arguments:', process.argv);
 
 const store = new Store();
 
-// Initialize IPC Handlers
 setupIpcHandlers(store);
 
-const gotTheLock = app.requestSingleInstanceLock()
+const gotTheLock = app.requestSingleInstanceLock();
 const autostarted = process.argv.indexOf('--hidden') !== -1;
-// In production with electron-builder, arguments might be different.
 const dev = process.argv.indexOf('--dev') !== -1;
 
 const getIconDir = () => {
-  const installPath = path.dirname(app.getPath("exe"));
-  log.debug("installPath: " + installPath);
+  const installPath = path.dirname(app.getPath('exe'));
+  log.debug('installPath: ' + installPath);
   let dir;
   if (dev) {
-    dir = path.join(__dirname, "build");
+    dir = path.join(__dirname, 'build');
   } else if (process.platform === 'darwin') {
-    dir = path.join(installPath, "../", "build");
-  }
-  else {
-    dir = path.join(installPath, "build");
+    dir = path.join(installPath, '../', 'build');
+  } else {
+    dir = path.join(installPath, 'build');
   }
   return dir;
 };
 
 const iconDir = getIconDir();
-log.debug("iconDir: " + iconDir);
+log.debug('iconDir: ' + iconDir);
 
 let win;
 let tray;
 
 // Create the browser window.
 function createWindow() {
-  log.debug("Create browser window");
+  log.debug('Create browser window');
   win = new BrowserWindow({
     width: 1263,
     height: 900,
@@ -61,9 +58,9 @@ function createWindow() {
       sandbox: true,
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  });
 
   // and load the index.html of the app.
   if (dev) {
@@ -76,18 +73,17 @@ function createWindow() {
 
   // remove menubar
   if (!dev) {
-    win.removeMenu()
+    win.removeMenu();
   }
 
   // check if app was autostarted
   if (autostarted) {
     log.verbose('App is started by AutoLaunch');
-  }
-  else {
+  } else {
     log.verbose('App is started by User');
     win.once('ready-to-show', () => {
-      win.show()
-    })
+      win.show();
+    });
   }
 }
 
@@ -101,51 +97,54 @@ function checkAutostartLights() {
 }
 
 function turnOnLights() {
-  log.debug("Checking lights to turn on...");
+  log.debug('Checking lights to turn on...');
   const lights = store.get('lights', []);
-  lights.forEach(light => {
+  lights.forEach((light) => {
     if (light.autostart) {
-      log.verbose("Turn on " + light.ip);
+      log.verbose('Turn on ' + light.ip);
       fetch(`http://${light.ip}/win&T=1`)
         .then(() => log.debug(`Turned on ${light.ip}`))
-        .catch(err => log.error(`Failed to turn on ${light.ip}`, err));
+        .catch((err) => log.error(`Failed to turn on ${light.ip}`, err));
     }
   });
 }
 
 // tray
 function createTray() {
-  log.debug("Create tray icon");
+  log.debug('Create tray icon');
   let iconFile;
   // tray icon for macOS
   if (process.platform === 'darwin') {
-    iconFile = "trayIcon.png";
+    iconFile = 'trayIcon.png';
   } else {
-    iconFile = "icon.png";
+    iconFile = 'icon.png';
   }
   const iconPath = path.join(iconDir, iconFile);
-  log.debug("Tray icon path: " + iconPath);
-  tray = new Tray(iconPath)
+  log.debug('Tray icon path: ' + iconPath);
+  tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Open', click: function () {
+      label: 'Open',
+      click: function () {
         win.show();
-      }
+      },
     },
     {
-      label: 'Hide', click: function () {
+      label: 'Hide',
+      click: function () {
         win.hide();
-      }
+      },
     },
     {
-      label: 'Quit', click: function () {
-        log.debug("Quit app via tray");
+      label: 'Quit',
+      click: function () {
+        log.debug('Quit app via tray');
         app.quit();
-      }
+      },
     },
-  ])
-  tray.setToolTip('WLED')
-  tray.setContextMenu(contextMenu)
+  ]);
+  tray.setToolTip('WLED');
+  tray.setContextMenu(contextMenu);
 
   tray.on('click', function () {
     win.show();
@@ -166,23 +165,23 @@ function checkTray() {
 // check if second instance was started
 if (!gotTheLock) {
   log.info('WLED-GUI quitted');
-  app.quit()
+  app.quit();
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     if (win) {
       log.info('Someone tried to run a second instance. Focus our main window');
-      win.show()
+      win.show();
     }
-  })
+  });
 
   app.whenReady().then(() => {
     createWindow();
     checkTray();
     checkAutostartLights();
-  })
+  });
 
   app.on('window-all-closed', () => {
-    log.debug("All windows are closed");
+    log.debug('All windows are closed');
     if (process.platform === 'darwin') {
       const settings = store.get('settings', { tray: true });
       if (settings.tray) {
@@ -193,11 +192,11 @@ if (!gotTheLock) {
       log.info('WLED-GUI quitted');
       app.quit();
     }
-  })
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+      createWindow();
     }
-  })
+  });
 }

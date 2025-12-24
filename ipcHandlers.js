@@ -41,7 +41,7 @@ export function setupIpcHandlers(store) {
   // Bonjour
   ipcMain.on('bonjour-find', (event) => {
     if (!bonjourInstance) bonjourInstance = new Bonjour();
-    bonjourInstance.find({ type: "http" }, function (service) {
+    bonjourInstance.find({ type: 'http' }, function (service) {
       event.sender.send('bonjour-found', service);
     });
   });
@@ -80,9 +80,9 @@ export function setupIpcHandlers(store) {
 
   // Ping
   ipcMain.handle('ping', async (event, ip) => {
-      const res = await ping.promise.probe(ip, {
-          timeout: 1,
-      });
-      return res;
+    const res = await ping.promise.probe(ip, {
+      timeout: 1,
+    });
+    return res;
   });
 }

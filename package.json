@@ -31,7 +31,9 @@
     "build linux rpm": "electron-builder --linux --publish=never -c.linux.target=rpm",
     "build linux snap": "electron-builder --linux --publish=never -c.linux.target=snap",
     "build linux freebsd": "electron-builder --linux --publish=never -c.linux.target=freebsd",
-    "build mac": "electron-builder --mac --publish=never"
+    "build mac": "electron-builder --mac --publish=never",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "build": {
     "files": [
@@ -67,11 +69,19 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@tailwindcss/vite": "^4.1.18",
     "@vitejs/plugin-react": "^5.1.2",
     "concurrently": "^9.2.1",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.26",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4",
     "tailwindcss": "^4.1.18",
     "vite": "^7.3.0",
     "wait-on": "^9.0.3"
