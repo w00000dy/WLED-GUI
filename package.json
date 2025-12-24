@@ -37,7 +37,7 @@
     "files": [
       "dist/**/*",
       "main.js",
-      "preload.cjs",
+      "preload.js",
       "package.json"
     ],
     "appId": "wled-gui.woody.pizza",

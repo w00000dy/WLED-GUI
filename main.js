@@ -59,11 +59,7 @@ function createWindow() {
       sandbox: true,
       nodeIntegration: false,
       contextIsolation: true,
-      // Important: Preload must be absolute path. 
-      // Since we are in ESM, __dirname is derived above.
-      // Ensure preload.cjs is used if we renamed it, or preload.js if compatible.
-      // We renamed it to preload.cjs in previous steps to avoid mismatches.
-      preload: path.join(__dirname, 'preload.cjs')
+      preload: path.join(__dirname, 'preload.js')
     }
   })
 
