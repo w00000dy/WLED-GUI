@@ -10,55 +10,21 @@ const Dashboard = () => {
         loadLights();
         const interval = setInterval(() => {
             syncLights();
-        }, 2500);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, []);
 
     const syncLights = async () => {
-        // We can't easily get current state of 'lights' inside effect without ref or dependency
-        // So we will just re-read from store or use functional state update if we were just toggling UI
-        // But here we want to fetch status from IP.
-        // Let's iterate over the lights we have in state.
-        setLights(currentLights => {
-            currentLights.forEach(light => {
-                 fetch(`http://${light.ip}/json/state`)
-                    .then(res => res.json())
-                    .then(data => {
-                        // Update online status and on/off state if needed
-                        // This is a bit complex in a map, simplified for now:
-                        // Just checking availability
-                        // Ideally we update the 'online' status in state
-                    })
-                    .catch(err => {
-                         // marked as offline
-                    })
-            });
-            // Actually, to properly update state without race conditions, 
-            // we should probably do this slightly differently.
-            // For now, let's just re-load from store to ensure list is up to date 
-            // AND check availability.
-            return currentLights; // Loop only for side effect? No.
-        });
-        
-        // Better approach:
         const storedLights = await window.api.store.get('lights', []);
         
         const updatedLights = await Promise.all(storedLights.map(async (light) => {
             try {
-                // simple timeout verify
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 2000);
-                const response = await fetch(`http://${light.ip}/json/info`, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                
-                if (response.ok) {
-                    return { ...light, online: true };
-                }
+                const res = await window.api.network.ping(light.ip);
+                return { ...light, online: res.alive };
             } catch (e) {
                 return { ...light, online: false };
             }
-            return { ...light, online: false };
         }));
         
         setLights(updatedLights);
@@ -67,7 +33,8 @@ const Dashboard = () => {
     const loadLights = async () => {
         try {
             const storedLights = await window.api.store.get('lights', []);
-            setLights(storedLights);
+            // Initialize with undefined online status (pending)
+            setLights(storedLights.map(l => ({ ...l, online: undefined })));
         } catch (error) {
             console.error("Failed to load lights", error);
         } finally {
@@ -126,7 +93,12 @@ const Dashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {lights.map((light, index) => (
+                {lights.map((light, index) => {
+                    let statusColor = 'bg-gray-500';
+                    if (light.online === true) statusColor = 'bg-green-500';
+                    else if (light.online === false) statusColor = 'bg-red-500';
+
+                    return (
                     <div key={index} className="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-orange-500/50 transition-all group relative">
                         {/* Delete Button (visible on hover) */}
                         <button 
@@ -139,7 +111,7 @@ const Dashboard = () => {
 
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-semibold text-white truncate pr-6">{light.name}</h2>
-                            <div className={`w-3 h-3 rounded-full ${light.online !== false ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                            <div className={`w-3 h-3 rounded-full ${statusColor}`} title={light.online === undefined ? 'Checking...' : (light.online ? 'Online' : 'Offline')}></div>
                         </div>
                         
                         <p className="text-gray-400 text-sm mb-4 font-mono">{light.ip}</p>
@@ -162,7 +134,7 @@ const Dashboard = () => {
                             </button>
                         </div>
                     </div>
-                ))}
+                )})}
             </div>
         </div>
     );

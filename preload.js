@@ -21,7 +21,8 @@ contextBridge.exposeInMainWorld('api', {
         close: () => ipcRenderer.send('window-close')
     },
     network: {
-        getInterfaces: () => ipcRenderer.invoke('get-interfaces')
+        getInterfaces: () => ipcRenderer.invoke('get-interfaces'),
+        ping: (ip) => ipcRenderer.invoke('ping', ip)
     },
     bonjour: {
         find: (callback) => {

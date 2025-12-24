@@ -3,6 +3,7 @@ import os from 'os';
 import { Bonjour } from 'bonjour-service';
 import AutoLaunch from 'auto-launch';
 import log from 'electron-log';
+import ping from 'ping';
 
 let bonjourInstance;
 
@@ -66,5 +67,13 @@ export function setupIpcHandlers(store) {
   });
   ipcMain.handle('store-delete', (event, key) => {
     store.delete(key);
+  });
+
+  // Ping
+  ipcMain.handle('ping', async (event, ip) => {
+      const res = await ping.promise.probe(ip, {
+          timeout: 1,
+      });
+      return res;
   });
 }
