@@ -23,7 +23,7 @@ const Settings = () => {
     };
 
     const checkOSAutostart = async () => {
-        const enabled = await window.api.autolaunch.isEnabled();
+        const enabled = await window.api.autolaunch.isEnabled({ name: 'WLED' });
         setAutostartEnabled(enabled);
     };
 
