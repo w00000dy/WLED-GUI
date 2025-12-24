@@ -2,13 +2,15 @@ import React from 'react';
 import { NavLink } from 'react-router';
 import { Lightbulb, Plus, Settings } from 'lucide-react';
 
+import pkg from '../../package.json';
+
 const Layout = ({ children }) => {
     return (
         <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden font-sans">
             {/* Sidebar */}
             <aside className="w-64 bg-gray-800 flex flex-col border-r border-gray-700">
                 <div className="h-20 flex items-center justify-center border-b border-gray-700">
-                    <img src="./images/wled_logo.png" alt="WLED Logo" className="h-12" />
+                    <img src="./images/wled_akemi_original.png" alt="WLED Logo" className="h-12" />
                 </div>
 
                 <nav className="flex-1 overflow-y-auto py-4">
@@ -62,7 +64,7 @@ const Layout = ({ children }) => {
                 </nav>
 
                 <div className="p-4 border-t border-gray-700">
-                     <p className="text-xs text-gray-500 text-center">WLED-GUI v0.8.0</p>
+                     <p className="text-xs text-gray-500 text-center">WLED-GUI v{pkg.version}</p>
                 </div>
             </aside>
 
