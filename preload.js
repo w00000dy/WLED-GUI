@@ -18,7 +18,8 @@ contextBridge.exposeInMainWorld('api', {
         openExternal: (url) => ipcRenderer.send('open-external', url)
     },
     window: {
-        close: () => ipcRenderer.send('window-close')
+        close: () => ipcRenderer.send('window-close'),
+        openDevice: (url) => ipcRenderer.send('open-device-window', url)
     },
     network: {
         getInterfaces: () => ipcRenderer.invoke('get-interfaces'),

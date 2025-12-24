@@ -24,6 +24,15 @@ export function setupIpcHandlers(store) {
     shell.openExternal(url);
   });
 
+  ipcMain.on('open-device-window', (event, url) => {
+    const win = new BrowserWindow({
+      width: 1200,
+      height: 800,
+    });
+    win.loadURL(url);
+    win.removeMenu();
+  });
+
   // Network Interfaces
   ipcMain.handle('get-interfaces', () => {
     return os.networkInterfaces();

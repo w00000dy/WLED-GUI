@@ -99,39 +99,60 @@ const Dashboard = () => {
                     else if (light.online === false) statusColor = 'bg-red-500';
 
                     return (
-                    <div key={index} className="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-orange-500/50 transition-all group relative">
-                        {/* Delete Button (visible on hover) */}
-                        <button 
-                            onClick={(e) => { e.stopPropagation(); deleteLight(index); }}
-                            className="absolute top-2 right-2 p-1 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                            title="Remove Light"
-                        >
-                            <Trash2 size={20} />
-                        </button>
+                    <div key={index} className="relative bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-orange-500/50 transition-all group">
+                        {/* Card Click Link (Absolute overlay to make whole card clickable) */}
+                        <Link to={`/device/${light.ip}`} className="absolute inset-0 z-0 rounded-xl" aria-label={`View ${light.name}`} />
 
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-semibold text-white truncate pr-6">{light.name}</h2>
-                            <div className={`w-3 h-3 rounded-full ${statusColor}`} title={light.online === undefined ? 'Checking...' : (light.online ? 'Online' : 'Offline')}></div>
-                        </div>
-                        
-                        <p className="text-gray-400 text-sm mb-4 font-mono">{light.ip}</p>
+                        {/* Content Container (z-10 to sit above the link, but with pointer-events-none unless specific interactive children enabled) */}
+                        <div className="relative z-10 pointer-events-none">
 
-                        <div className="flex items-center justify-between mt-4 border-t border-gray-700 pt-4">
-                            <div className="flex items-center">
-                                <label className="flex items-center cursor-pointer relative">
-                                    <input type="checkbox" className="sr-only peer" checked={light.autostart || false} onChange={() => toggleAutostart(index, light.autostart)} />
-                                    <div className="w-9 h-5 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600"></div>
-                                    <span className="ml-2 text-xs text-gray-400 font-medium">Autostart</span>
-                                </label>
+                            {/* Delete Button (visible on hover) - Needs pointer-events-auto */}
+                            <button 
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); deleteLight(index); }}
+                                className="absolute top-[-10px] right-[-10px] p-2 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto cursor-pointer"
+                                title="Remove Light"
+                            >
+                                <Trash2 size={20} />
+                            </button>
+
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-xl font-semibold text-white truncate pr-6">{light.name}</h2>
+                                <div className={`w-3 h-3 rounded-full ${statusColor}`} title={light.online === undefined ? 'Checking...' : (light.online ? 'Online' : 'Offline')}></div>
                             </div>
                             
-                            <button 
-                                onClick={() => window.api.shell.openExternal(`http://${light.ip}`)}
-                                className="text-orange-500 hover:text-orange-400 text-sm font-semibold flex items-center"
-                            >
-                                Open UI
-                                <ExternalLink size={16} className="ml-1" />
-                            </button>
+                            <p className="text-gray-400 text-sm mb-4 font-mono">{light.ip}</p>
+
+                            <div className="flex items-center justify-between mt-4 border-t border-gray-700 pt-4">
+                                <div className="flex items-center pointer-events-auto">
+                                    <label className="flex items-center cursor-pointer relative">
+                                        <input 
+                                            type="checkbox" 
+                                            className="sr-only peer" 
+                                            checked={light.autostart || false} 
+                                            onChange={(e) => {
+                                                // Link click might be interfering if we don't stop propagation?
+                                                // Actually Link is z-0, this is z-10. But Checkbox needs to be clickable.
+                                                // Since this container is pointer-events-none, we need to re-enable checks.
+                                                toggleAutostart(index, light.autostart)
+                                            }} 
+                                        />
+                                        <div className="w-9 h-5 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600"></div>
+                                        <span className="ml-2 text-xs text-gray-400 font-medium">Autostart</span>
+                                    </label>
+                                </div>
+                                
+                                <button 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        window.api.window.openDevice(`http://${light.ip}`);
+                                    }}
+                                    className="text-orange-500 hover:text-orange-400 text-sm font-semibold flex items-center transition-colors pointer-events-auto cursor-pointer"
+                                >
+                                    Open Window
+                                    <ExternalLink size={16} className="ml-1" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )})}
