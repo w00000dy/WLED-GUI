@@ -4,7 +4,8 @@ import { fileURLToPath } from 'url';
 import log from 'electron-log';
 import Store from 'electron-store';
 import AutoLaunch from 'auto-launch';
-import bonjour from 'bonjour';
+
+import { Bonjour } from 'bonjour-service';
 import os from 'os';
 
 // Setup file URL derivation for ESM
@@ -135,7 +136,7 @@ ipcMain.handle('get-interfaces', () => {
 // Bonjour
 let bonjourInstance;
 ipcMain.on('bonjour-find', (event) => {
-    if (!bonjourInstance) bonjourInstance = bonjour();
+    if (!bonjourInstance) bonjourInstance = new Bonjour();
     bonjourInstance.find({ type: "http" }, function (service) {
         event.sender.send('bonjour-found', service);
     });
