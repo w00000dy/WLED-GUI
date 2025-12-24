@@ -17,8 +17,8 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "dev": "vite",
-    "start": "electron . --dev",
+    "dev": "concurrently -k \"vite\" \"wait-on tcp:5173 && electron . --dev\"",
+    "start": "vite build && electron .",
     "autostart": "electron . --hidden --dev",
     "pack": "vite build && electron-builder --dir",
     "build": "vite build && electron-builder -mwl",
@@ -69,10 +69,12 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@vitejs/plugin-react": "^5.1.2",
+    "concurrently": "^9.2.1",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
     "tailwindcss": "^4.1.18",
-    "vite": "^7.3.0"
+    "vite": "^7.3.0",
+    "wait-on": "^9.0.3"
   },
   "dependencies": {
     "@electron/remote": "^2.1.3",
