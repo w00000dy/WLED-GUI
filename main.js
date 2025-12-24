@@ -1,37 +1,52 @@
-const { app, BrowserWindow, Menu, Tray } = require('electron')
-const path = require('path')
-const log = require('electron-log');
+import { app, BrowserWindow, Menu, Tray, ipcMain, shell } from 'electron';
+import path from 'node:path';
+import { fileURLToPath } from 'url';
+import log from 'electron-log';
+import Store from 'electron-store';
+import AutoLaunch from 'auto-launch';
+import bonjour from 'bonjour';
+import os from 'os';
+
+// Setup file URL derivation for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 log.initialize();
 
 /* LOG LEVEL */
-// log.transports.console.level = "error";
-// log.transports.file.level = "error";
-// log.transports.console.level = "warn";
-// log.transports.file.level = "warn";
-// log.transports.console.level = "info";
-// log.transports.file.level = "info";
-// log.transports.console.level = "verbose";
-// log.transports.file.level = "verbose";
- log.transports.console.level = "debug";
- log.transports.file.level = "debug";
-// log.transports.console.level = "silly";
-// log.transports.file.level = "silly";
+log.transports.console.level = "debug";
+log.transports.file.level = "debug";
 
 log.info('WLED-GUI started');
+log.debug("Start arguments:", process.argv);
 
-log.debug("Start arguments:");
-log.debug(process.argv);
+const store = new Store();
 
 const gotTheLock = app.requestSingleInstanceLock()
 const autostarted = process.argv.indexOf('--hidden') !== -1;
+// In production with electron-builder, arguments might be different.
 const dev = process.argv.indexOf('--dev') !== -1;
+
+const getIconDir = () => {
+  const installPath = path.dirname(app.getPath("exe"));
+  log.debug("installPath: " + installPath);
+  let dir;
+  if (dev) {
+    dir = path.join(__dirname, "build");
+  } else if (process.platform === 'darwin') {
+    dir = path.join(installPath, "../", "build");
+  }
+  else {
+    dir = path.join(installPath, "build");
+  }
+  return dir;
+};
+
 const iconDir = getIconDir();
 log.debug("iconDir: " + iconDir);
 
-var win;
-var tray;
-var settings;
+let win;
+let tray;
 
 // Create the browser window.
 function createWindow() {
@@ -44,20 +59,27 @@ function createWindow() {
       sandbox: true,
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
+      // Important: Preload must be absolute path. 
+      // Since we are in ESM, __dirname is derived above.
+      // Ensure preload.cjs is used if we renamed it, or preload.js if compatible.
+      // We renamed it to preload.cjs in previous steps to avoid mismatches.
+      preload: path.join(__dirname, 'preload.cjs')
     }
   })
 
   // and load the index.html of the app.
-  win.loadFile('index.html')
+  if (dev) {
+    win.loadURL('http://localhost:5173');
+    // Open the DevTools.
+    win.webContents.openDevTools();
+  } else {
+    win.loadFile(path.join(__dirname, 'dist', 'index.html'));
+  }
 
   // remove menubar
   if (!dev) {
     win.removeMenu()
   }
-
-  // Open the DevTools.
-  // win.webContents.openDevTools()
 
   // check if app was autostarted
   if (autostarted) {
@@ -71,27 +93,32 @@ function createWindow() {
   }
 }
 
-// create hidden worker window
-function createWorker() {
-  log.debug("Create autostart worker window");
-  const workerWindow = new BrowserWindow({
-    show: false,
-    webPreferences: {
-      sandbox: true,
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
+// Turn on lights
+function checkAutostartLights() {
+  const settings = store.get('settings', { autoTurnOnOnlyAtAutostart: false });
+  // If autostarted OR (NOT only-at-autostart), turn on lights
+  if (autostarted || !settings.autoTurnOnOnlyAtAutostart) {
+    turnOnLights();
+  }
+}
+
+function turnOnLights() {
+  log.debug("Checking lights to turn on...");
+  const lights = store.get('lights', []);
+  lights.forEach(light => {
+    if (light.autostart) {
+      log.verbose("Turn on " + light.ip);
+      fetch(`http://${light.ip}/win&T=1`)
+        .then(() => log.debug(`Turned on ${light.ip}`))
+        .catch(err => log.error(`Failed to turn on ${light.ip}`, err));
     }
   });
-  // and load the autostart.html
-  workerWindow.loadFile('autostart.html');
 }
 
 // IPC listener for window closing
-const { ipcMain } = require('electron');
 ipcMain.on('window-close', (event) => {
-  const win = BrowserWindow.fromWebContents(event.sender);
-  if (win) win.close();
+  const w = BrowserWindow.fromWebContents(event.sender);
+  if (w) w.close();
 });
 
 ipcMain.on('log', (event, level, ...args) => {
@@ -101,19 +128,18 @@ ipcMain.on('log', (event, level, ...args) => {
 });
 
 ipcMain.on('open-external', (event, url) => {
-  const { shell } = require('electron');
   shell.openExternal(url);
 });
 
 // Network Interfaces
 ipcMain.handle('get-interfaces', () => {
-    return require('os').networkInterfaces();
+    return os.networkInterfaces();
 });
 
 // Bonjour
 let bonjourInstance;
 ipcMain.on('bonjour-find', (event) => {
-    if (!bonjourInstance) bonjourInstance = require('bonjour')();
+    if (!bonjourInstance) bonjourInstance = bonjour();
     bonjourInstance.find({ type: "http" }, function (service) {
         event.sender.send('bonjour-found', service);
     });
@@ -126,7 +152,6 @@ ipcMain.on('bonjour-destroy', () => {
 });
 
 // AutoLaunch
-const AutoLaunch = require('auto-launch');
 ipcMain.handle('autolaunch-enable', async (event, options) => {
     const launcher = new AutoLaunch(options);
     if(options.appPath) launcher.opts.appPath = options.appPath; // Handle path override
@@ -141,18 +166,28 @@ ipcMain.handle('autolaunch-isenabled', async (event, options) => {
     return launcher.isEnabled();
 });
 
+// Store IPC
+ipcMain.handle('store-get', (event, key, defaultValue) => {
+  return store.get(key, defaultValue);
+});
+ipcMain.handle('store-set', (event, key, value) => {
+  store.set(key, value);
+});
+ipcMain.handle('store-delete', (event, key) => {
+  store.delete(key);
+});
+
 // tray
 function createTray() {
   log.debug("Create tray icon");
   let iconFile;
-  let iconPath;
   // tray icon for macOS
   if (process.platform === 'darwin') {
     iconFile = "trayIcon.png";
   } else {
     iconFile = "icon.png";
   }
-  iconPath = path.join(iconDir, iconFile);
+  const iconPath = path.join(iconDir, iconFile);
   log.debug("Tray icon path: " + iconPath);
   tray = new Tray(iconPath)
   const contextMenu = Menu.buildFromTemplate([
@@ -167,9 +202,9 @@ function createTray() {
       }
     },
     {
-      label: 'Close', click: function () {
-        log.debug("Close window via tray");
-        win.close();
+      label: 'Quit', click: function () {
+        log.debug("Quit app via tray");
+        app.quit();
       }
     },
   ])
@@ -181,57 +216,15 @@ function createTray() {
   });
 }
 
-// read settings from localstorage
-function loadSettings() {
-  log.debug("Load settings from localstorage");
-  win.webContents.executeJavaScript('localStorage.getItem("settings");').then(result => {
-    settings = JSON.parse(result);
-    log.debug("Settings:");
-    log.debug(settings);
-    checkWorker();
-    checkTray();
-  });
-}
-
-function checkWorker() {
-  if (autostarted) {
-    createWorker();
-  } else {
-    if (settings !== null) {
-      // start worker only if enabled
-      if (!settings[2].value) {
-        createWorker();
-      }
-    }
-  }
-}
-
 function checkTray() {
+  const settings = store.get('settings', { tray: true });
   if (autostarted) {
     createTray();
   } else {
-    if (settings !== null) {
-      // show tray only if enabled
-      if (settings[1].value) {
-        createTray();
-      }
+    if (settings.tray) {
+      createTray();
     }
   }
-}
-
-function getIconDir() {
-  const installPath = path.dirname(app.getPath("exe"));
-  log.debug("installPath: " + installPath);
-  let dir;
-  if (dev) {
-    dir = "build/";
-  } else if (process.platform === 'darwin') {
-    dir = path.join(installPath, "../", "build");
-  }
-  else {
-    dir = path.join(installPath, "build");
-  }
-  return dir;
 }
 
 // check if second instance was started
@@ -246,22 +239,18 @@ if (!gotTheLock) {
     }
   })
 
-  // This method will be called when Electron has finished
-  // initialization and is ready to create browser windows.
-  // Some APIs can only be used after this event occurs.
-  app.whenReady().then(createWindow)
-  app.whenReady().then(loadSettings)
+  app.whenReady().then(() => {
+    createWindow();
+    checkTray();
+    checkAutostartLights();
+  })
 
-  // Quit when all windows are closed, except on macOS. There, it's common
-  // for applications and their menu bar to stay active until the user quits
-  // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
     log.debug("All windows are closed");
     if (process.platform === 'darwin') {
-      if (settings !== null) {
-        if (settings[1].value) {
-          tray.destroy();
-        }
+      const settings = store.get('settings', { tray: true });
+      if (settings.tray) {
+        if (tray) tray.destroy();
       }
       log.info('WLED-GUI closed');
     } else {
@@ -271,13 +260,8 @@ if (!gotTheLock) {
   })
 
   app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
     }
   })
 }
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

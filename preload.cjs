@@ -34,5 +34,10 @@ contextBridge.exposeInMainWorld('api', {
         enable: (options) => ipcRenderer.invoke('autolaunch-enable', options),
         disable: (options) => ipcRenderer.invoke('autolaunch-disable', options),
         isEnabled: (options) => ipcRenderer.invoke('autolaunch-isenabled', options)
+    },
+    store: {
+        get: (key, defaultValue) => ipcRenderer.invoke('store-get', key, defaultValue),
+        set: (key, value) => ipcRenderer.invoke('store-set', key, value),
+        delete: (key) => ipcRenderer.invoke('store-delete', key)
     }
 });
