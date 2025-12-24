@@ -1,4 +1,4 @@
-const log = require('electron-log');
+// const log = require('electron-log');
 
 //    This is used to turn on lights automatically at startup
 
@@ -12,20 +12,20 @@ for (let index = 0; index < lights.length; index++) {
     }
 }
 
-log.debug("Autostarted lights: " + needAutostart);
+window.api.log.debug("Autostarted lights: " + needAutostart);
 
 if (needAutostart.length === 0) {
-    window.close();
+    window.api.window.close();
 } else {
     for (let index = 0; index < needAutostart.length; index++) {
         let ip = needAutostart[index];
-        log.verbose("Turn on " + ip);
+        window.api.log.verbose("Turn on " + ip);
         let xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://' + ip + "/win&T=1", true);
         xhr.onload = function () {
             if (index === (needAutostart.length - 1)) {
-                log.debug("close");
-                window.close();
+                window.api.log.debug("close");
+                window.api.window.close();
             }
         };
         xhr.send();

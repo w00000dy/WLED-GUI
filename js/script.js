@@ -1,4 +1,4 @@
-const log = require('electron-log');
+// const log = require('electron-log');
 
 document.getElementById("logo").addEventListener("click", openRepositorie);
 // the imgClicked variable prevents the goToWled() function from beeing triggerd when clicking in a button
@@ -21,7 +21,7 @@ if (localStorage.getItem("wledUiCfg") === null) {
 
 // create json
 if (localStorage.getItem("lights") === null) {
-    log.verbose("No local storage item found. Creating one...");
+    window.api.log.verbose("No local storage item found. Creating one...");
     var lights = [];
     json = JSON.stringify(lights);
     localStorage.setItem("lights", json);
@@ -34,14 +34,12 @@ if (localStorage.getItem("pcm") === null) {
 
 // Opens Github page in default browser
 function openRepositorie() {
-    const { shell } = require('electron')
-    shell.openExternal('https://github.com/Aircoookie/WLED')
+    window.api.shell.openExternal('https://github.com/Aircoookie/WLED')
 }
 
 // Opens the latest release of WLED-GUI in default browser
 function openRelease() {
-    const { shell } = require('electron')
-    shell.openExternal('https://github.com/w00000dy/WLED-GUI/releases/latest')
+    window.api.shell.openExternal('https://github.com/w00000dy/WLED-GUI/releases/latest')
 }
 
 // Shows all Lighs in main page

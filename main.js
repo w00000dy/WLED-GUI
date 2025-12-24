@@ -41,8 +41,10 @@ function createWindow() {
     height: 900,
     show: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      sandbox: true,
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   })
 
@@ -75,13 +77,69 @@ function createWorker() {
   const workerWindow = new BrowserWindow({
     show: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      sandbox: true,
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
   // and load the autostart.html
   workerWindow.loadFile('autostart.html');
 }
+
+// IPC listener for window closing
+const { ipcMain } = require('electron');
+ipcMain.on('window-close', (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win) win.close();
+});
+
+ipcMain.on('log', (event, level, ...args) => {
+  if (log[level]) {
+    log[level](...args);
+  }
+});
+
+ipcMain.on('open-external', (event, url) => {
+  const { shell } = require('electron');
+  shell.openExternal(url);
+});
+
+// Network Interfaces
+ipcMain.handle('get-interfaces', () => {
+    return require('os').networkInterfaces();
+});
+
+// Bonjour
+let bonjourInstance;
+ipcMain.on('bonjour-find', (event) => {
+    if (!bonjourInstance) bonjourInstance = require('bonjour')();
+    bonjourInstance.find({ type: "http" }, function (service) {
+        event.sender.send('bonjour-found', service);
+    });
+});
+ipcMain.on('bonjour-destroy', () => {
+    if (bonjourInstance) {
+        bonjourInstance.destroy();
+        bonjourInstance = null;
+    }
+});
+
+// AutoLaunch
+const AutoLaunch = require('auto-launch');
+ipcMain.handle('autolaunch-enable', async (event, options) => {
+    const launcher = new AutoLaunch(options);
+    if(options.appPath) launcher.opts.appPath = options.appPath; // Handle path override
+    return launcher.enable();
+});
+ipcMain.handle('autolaunch-disable', async (event, options) => {
+    const launcher = new AutoLaunch(options);
+    return launcher.disable();
+});
+ipcMain.handle('autolaunch-isenabled', async (event, options) => {
+    const launcher = new AutoLaunch(options);
+    return launcher.isEnabled();
+});
 
 // tray
 function createTray() {
