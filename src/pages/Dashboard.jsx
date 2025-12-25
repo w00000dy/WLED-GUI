@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { LightbulbOff, Plus, Trash2, ExternalLink } from 'lucide-react';
 
@@ -119,9 +119,9 @@ const Dashboard = () => {
                 aria-label={`View ${light.name}`}
               />
 
-              {/* Content Container (z-10 to sit above the link, but with pointer-events-none unless specific interactive children enabled) */}
+              {/* Content Container */}
               <div className="relative z-10 pointer-events-none">
-                {/* Delete Button (visible on hover) - Needs pointer-events-auto */}
+                {/* Delete Button (visible on hover) */}
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -152,9 +152,6 @@ const Dashboard = () => {
                         className="sr-only peer"
                         checked={light.autostart || false}
                         onChange={(e) => {
-                          // Link click might be interfering if we don't stop propagation?
-                          // Actually Link is z-0, this is z-10. But Checkbox needs to be clickable.
-                          // Since this container is pointer-events-none, we need to re-enable checks.
                           toggleAutostart(index, light.autostart);
                         }}
                       />

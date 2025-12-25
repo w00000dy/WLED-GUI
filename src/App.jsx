@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -7,11 +6,6 @@ import AddDevice from './pages/AddDevice';
 import Settings from './pages/Settings';
 
 function App() {
-  // Log startup in React world just to confirm
-  useEffect(() => {
-    console.log('WLED-GUI React App Started');
-  }, []);
-
   return (
     <Router>
       <Layout>
