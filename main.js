@@ -47,31 +47,24 @@ log.debug('iconDir: ' + iconDir);
 let win;
 let tray;
 
-// Create the browser window.
 function createWindow() {
   log.debug('Create browser window');
   win = new BrowserWindow({
-    width: 1263,
+    width: 1300,
     height: 900,
     show: false,
     webPreferences: {
-      sandbox: true,
-      nodeIntegration: false,
-      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  // and load the index.html of the app.
   if (dev) {
     win.loadURL('http://localhost:5173');
-    // Open the DevTools.
     win.webContents.openDevTools();
   } else {
     win.loadFile(path.join(__dirname, 'dist', 'index.html'));
   }
 
-  // remove menubar
   if (!dev) {
     win.removeMenu();
   }

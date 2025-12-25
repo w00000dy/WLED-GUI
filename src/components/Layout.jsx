@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from 'react-router';
 import { Lightbulb, Plus, Settings } from 'lucide-react';
 
