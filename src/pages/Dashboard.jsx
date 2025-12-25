@@ -8,6 +8,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadLights();
+    syncLights();
     const interval = setInterval(() => {
       syncLights();
     }, 1000);
