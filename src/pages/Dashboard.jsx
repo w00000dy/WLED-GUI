@@ -110,8 +110,22 @@ const Dashboard = () => {
           return (
             <div
               key={index}
-              className="relative bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-orange-500/50 transition-all group"
+              className="relative bg-gray-800 rounded-xl shadow-lg border border-gray-700 hover:border-orange-500/50 transition-all group overflow-hidden"
             >
+              {/* Live View Strip at the very top */}
+              {light.online && (
+                <div className="w-full h-1 bg-black/50 relative">
+                  <div className="absolute inset-0 z-10" />
+                  <iframe
+                    src={`http://${light.ip}/liveview?ws`}
+                    className="w-full h-full border-0 pointer-events-none"
+                    style={{ width: '100%', height: '100%' }}
+                    title={`Live view of ${light.name}`}
+                    tabIndex="-1"
+                  />
+                </div>
+              )}
+
               {/* Card Click Link (Absolute overlay to make whole card clickable) */}
               <Link
                 to={`/device/${light.ip}`}
@@ -119,8 +133,8 @@ const Dashboard = () => {
                 aria-label={`View ${light.name}`}
               />
 
-              {/* Content Container */}
-              <div className="relative z-10 pointer-events-none">
+              {/* Content Container (p-6 moved here) */}
+              <div className="relative z-10 pointer-events-none p-6">
                 {/* Delete Button (visible on hover) */}
                 <button
                   onClick={(e) => {
@@ -128,7 +142,7 @@ const Dashboard = () => {
                     e.stopPropagation();
                     deleteLight(index);
                   }}
-                  className="absolute top-[-10px] right-[-10px] p-2 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto cursor-pointer"
+                  className="absolute top-0 right-0 p-2 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto cursor-pointer"
                   title="Remove Light"
                 >
                   <Trash2 size={20} />
