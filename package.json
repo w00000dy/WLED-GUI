@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "electron": "^39.8.6",
-    "electron-builder": "^26.7.0"
+    "electron-builder": "^26.15.3"
   },
   "dependencies": {
     "@electron/remote": "^2.1.3",
